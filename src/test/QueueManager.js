@@ -184,31 +184,29 @@ core.Module("lowland.test.QueueManager", {
       Manager.clear();
       var callstack = [];
       
-      Manager.register("t7", function() {
-        callstack.push("t7");
-      }, this, "t5");
-      Manager.register("t8", function() {
-        callstack.push("t8");
-      }, this, ["t5", "t6"]);
-      Manager.register("t5", function() {
-        callstack.push("t5");
-      });
-      Manager.register("t6", function() {
-        callstack.push("t6");
-      }, this, "t5");
+      Manager.register("t11", function() {
+        callstack.push("t11");
+      }, this);
+      Manager.register("t12", function() {
+        Manager.run("t11");
+        callstack.push("t12");
+      }, this, ["t11"]);
+      Manager.register("t13", function() {
+        callstack.push("t13");
+      }, this, ["t12"]);
       
-      Manager.run("t5");
-      Manager.run("t7");
-      Manager.run("t8");
-      Manager.run("t6");
+      
+      Manager.run("t11");
+      Manager.run("t12");
+      Manager.run("t13");
       
       window.setTimeout(function() {
         var c = callstack;
-        ok(c.length == 4 && c[0] == "t5" && 
-           (c.indexOf("t7") > c.indexOf("t5")) &&
-           (c.indexOf("t8") > c.indexOf("t5")) &&
-           (c.indexOf("t8") > c.indexOf("t6")) &&
-           (c.indexOf("t6") > c.indexOf("t5")),
+        ok(c.length == 4 && 
+           c[0] == "t11" && 
+           c[1] == "t12" &&
+           c[2] == "t11" &&
+           c[3] == "t13",
            "Order of handlers with simple dependsOn paramter is right");
         start();
       }, 10);
