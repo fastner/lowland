@@ -10,6 +10,7 @@
   var registration = [];
   var callstack = [];
   var schedule = {};
+  var runState = "stop";
   
   /**
    * Generic queue manager supporting simple dependency dissolving.
@@ -70,7 +71,7 @@
         } else {
           var pos = 0;
           for (var j=0,jj=dependent.length; j<jj; j++) {
-            if (depends.contains(dependent[j].name)) {
+            if (depends.contains(dependent[j])) {
               pos = j+1;
             }
           }
@@ -107,7 +108,10 @@
           throw new Error("Parameter name not set");
         }
       }
-      
+
+      if (runState != "stop") {
+        runState = "dirty";
+      }
       schedule[name] = true;
       this.scheduleFlush();
     },
@@ -115,17 +119,26 @@
     __flush : function() {
       timer = null;
       
+      runState = "running";
+      
       for (var i=0,ii=callstack.length; i<ii; i++) {
         var key = callstack[i];
-        if (schedule[key]) {
+        if (key && schedule[key]) {
           var runner = this.__getCallback(key);
           if (runner) {
+            schedule[key] = false;
             runner.callback.call(runner.context);
+            if (runState == "dirty") {
+              runState = "running";
+              i=-1;
+            }
           } else if (core.Env.getValue("debug")) {
             throw new Error("No callback for name " + name + " registered");
           }
         }
       }
+      
+      runState = "stop";
     }
   });
 })(window);
