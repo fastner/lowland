@@ -5,6 +5,11 @@
 ==================================================================================================
 */
 
+/**
+ * @require {core.ext.Object}
+ * @require {core.ext.Array}
+ */
+
 (function(window) {
   var timer = null;
   var registration = [];
