@@ -7,6 +7,16 @@
 
 core.Class("lowland.events.DataEvent", {
   properties : {
-    data : {}
+    data : {},
+    oldData : {}
+  },
+  
+  construct : function(value, oldValue) {
+    if (value) {
+      this.setData(value);
+    }
+    if (oldValue) {
+      this.setOldData(oldValue);
+    }
   }
 });
