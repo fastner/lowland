@@ -19,8 +19,22 @@ core.Class("lowland.base.Events", {
       lowland.events.EventManager.addListener(this, event, callback, context);
     },
     
+    addListenerOnce : function(event, callback, context) {
+      var self = this;
+      var cb = function() {
+        lowland.events.EventManager.removeListener(self, event, cb, context);
+        callback.apply(context, arguments);
+      };
+      
+      lowland.events.EventManager.addListener(this, event, cb, context);
+    },
+    
     removeListener : function(event, callback, context) {
       lowland.events.EventManager.removeListener(this, event, callback, context);
+    },
+    
+    hasListener : function(event, callback, context) {
+      return lowland.events.EventManager.hasListener(this, event, callback, context);
     },
     
     dispose : function() {
