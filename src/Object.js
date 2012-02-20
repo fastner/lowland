@@ -9,5 +9,15 @@ core.Class("lowland.Object", {
   construct : function() {
     lowland.base.UserData.call(this);
     lowland.base.Events.call(this);
+  },
+  
+  members : {
+    error : function() {
+      console.error(this.constructor || this, arguments);
+    },
+    
+    warn : function() {
+      console.warn(this.constructor || this, arguments);
+    }
   }
 });
