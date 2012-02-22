@@ -199,7 +199,6 @@ core.Module("lowland.test.QueueManager", {
       Manager.run("t11");
       Manager.run("t12");
       Manager.run("t13");
-      
       window.setTimeout(function() {
         var c = callstack;
         ok(c.length == 4 && 
@@ -207,7 +206,36 @@ core.Module("lowland.test.QueueManager", {
            c[1] == "t12" &&
            c[2] == "t11" &&
            c[3] == "t13",
-           "Order of handlers with simple dependsOn paramter is right");
+           "Callstack is wrong");
+        start();
+      }, 10);
+    });
+    stop();
+    
+    asyncTest("test order of dependencies", function() {
+      Manager.clear();
+      var callstack = [];
+      
+      Manager.register("t11", function() {
+        callstack.push("t11");
+      }, this);
+      Manager.register("t12", function() {
+        callstack.push("t12");
+      }, this, ["t11"]);
+      Manager.register("t13", function() {
+        callstack.push("t13");
+      }, this, ["t12"]);
+      
+      
+      Manager.run("t11");
+      Manager.run("t12");
+      Manager.run("t13");
+      window.setTimeout(function() {
+        var c = callstack;
+        ok(c.length == 3 && 
+           c.indexOf("t11") < c.indexOf("t12") && 
+           c.indexOf("t12") < c.indexOf("t13"),
+           "Callstack is wrong");
         start();
       }, 10);
     });
