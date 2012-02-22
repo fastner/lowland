@@ -1,9 +1,9 @@
 
 /**
- * @require {lowland.test.qunit}
- * @require {core.ext.Object}
- * @require {core.ext.Array}
- * @require {lowland.ext.Function}
+ * #require(lowland.test.qunit)
+ * #require(ext.sugar.Object)
+ * #require(ext.sugar.Array)
+ * #require(lowland.ext.Function)
  */
 
 var global = this;

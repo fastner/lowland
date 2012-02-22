@@ -1,7 +1,7 @@
 /**
- * @require {core.ext.Object}
- * @require {core.ext.String}
- * @require {core.ext.Function}
+ * #require(ext.sugar.Object)
+ * #require(ext.sugar.String)
+ * #require(ext.sugar.Function)
  */
 core.Class("lowland.Object", {
   include : [core.property.MGeneric, lowland.base.UserData, lowland.base.Events],

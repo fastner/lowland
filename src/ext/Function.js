@@ -6,7 +6,7 @@
 */
 
 /**
- * @require {core.ext.Object}
+ * #require(ext.sugar.Object)
  */
 
 (function(window) {
@@ -27,7 +27,7 @@
   };
   addEventListener("message", handleMessage, true);
   
-  Object.addPrototypeMethods("Function", {
+  core.Main.addMembers("Function", {
     
     delay : function(time) {
       var func = this;

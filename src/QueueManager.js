@@ -6,8 +6,8 @@
 */
 
 /**
- * @require {core.ext.Object}
- * @require {core.ext.Array}
+ * #require(ext.sugar.Object)
+ * #require(ext.sugar.Array)
  */
 
 (function(window) {
