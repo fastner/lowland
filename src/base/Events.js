@@ -5,12 +5,13 @@ core.Class("lowland.base.Events", {
     fireEvent : function(type, value, old) {
       var events = core.Class.getEvents(this.constructor);
       var cls = events[type];
-      /*if (core.Env.getValue("debug")) {
+      if (core.Env.getValue("debug")) {
         if (!cls || !core.Class.isClass(cls)) {
-          throw new Error("Class " + this.construct + " has no event " + type);
+          //throw new Error("Class " + this.constructor + " has no event " + type);
+          console.warn("Class " + this.constructor + " has no event " + type);
         }
-      }*/
-      if (!cls) {
+      }
+      if (cls) {
         lowland.events.EventManager.fireEvent(this, type, cls, [value, old]);
       }
     },

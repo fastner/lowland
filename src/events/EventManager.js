@@ -142,7 +142,7 @@
         };
         etf.prototype = new eventClass();
       }
-      
+
       var targetStore = eventStore[target];
       if (targetStore) {
         targetStore = targetStore[event];

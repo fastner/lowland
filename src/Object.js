@@ -12,6 +12,10 @@ core.Class("lowland.Object", {
   },
   
   members : {
+    debug : function() {
+      console.log(this.constructor || this, arguments);
+    },
+    
     error : function() {
       console.error(this.constructor || this, arguments);
     },
