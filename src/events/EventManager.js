@@ -25,9 +25,9 @@
         }
       }
       
-      var targetStore = eventStore[target];
+      var targetStore = eventStore[target.getHash()];
       if (!targetStore) {
-        targetStore = eventStore[target] = {};
+        targetStore = eventStore[target.getHash()] = {};
       }
       
       var targetEventStore = targetStore[event];
@@ -35,7 +35,7 @@
         targetEventStore = targetStore[event] = [];
       }
       
-      targetEventStore.push([callback, context]);
+      targetEventStore.push([callback, context || target]);
     },
     
     hasListener : function(target, event, callback, context) {
@@ -48,7 +48,7 @@
         }
       }
       
-      var targetStore = eventStore[target];
+      var targetStore = eventStore[target.getHash()];
       if (targetStore) {
         targetStore = targetStore[event];
         
@@ -79,7 +79,7 @@
           throw new Error("Parameter event not set");
         }
       }
-      var targetStore = eventStore[target];
+      var targetStore = eventStore[target.getHash()];
       if (targetStore) {
         if (callback) {
           targetStore = targetStore[event];
@@ -102,7 +102,7 @@
             }
             
             if (deleteIndex.length == targetStore.length) {
-              delete eventStore[target][event];
+              delete eventStore[target.getHash()][event];
             } else {
               for (var j=deleteIndex.length-1; j>=0; j--) {
                 targetStore.splice(deleteIndex[j], 1);
@@ -122,7 +122,7 @@
         }
       }
       
-      delete eventStore[target];
+      delete eventStore[target.getHash()];
     },
     
     fireEvent : function(target, event, eventClass, eventParameter) {
@@ -143,7 +143,7 @@
         etf.prototype = new eventClass();
       }
 
-      var targetStore = eventStore[target];
+      var targetStore = eventStore[target.getHash()];
       if (targetStore) {
         targetStore = targetStore[event];
         
@@ -160,6 +160,8 @@
           return true;
         }
       }
+      
+      return false;
     }
   });
 })();
