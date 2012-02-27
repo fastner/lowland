@@ -29,11 +29,11 @@
   
   core.Main.addMembers("Function", {
     
-    delay : function(time) {
+    delay : function(time, context) {
       var func = this;
-      setTimeout(function() {
-        func.apply(func, slice.call(arguments, 1));
-      }, time, slice.call(arguments, 1));
+      setTimeout(function(context, args) {
+        func.apply(context, args);
+      }, time, context, slice.call(arguments, 2));
     },
     
     /**
