@@ -151,10 +151,12 @@
           for (var i=0,ii=targetStore.length; i<ii; i++) {
             var t = targetStore[i];
             
-            if (etf) {
-              t[0].call(t[1], new etf());
-            } else {
-              t[0].call(t[1]);
+            if (t) {
+              if (etf) {
+                t[0].call(t[1], new etf());
+              } else {
+                t[0].call(t[1]);
+              }
             }
           }
           return true;
