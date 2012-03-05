@@ -6,7 +6,10 @@ core.Module("lowland.test.events.EventManager", {
     
     var Manager = lowland.events.EventManager;
     core.Class("Testtarget", {
-      
+      include : [lowland.Object],
+      construct : function() {
+        lowland.Object.apply(this, arguments);
+      }
     });
     var testTarget = new Testtarget();
     
@@ -137,7 +140,7 @@ core.Module("lowland.test.events.EventManager", {
       var called = false;
       
       var callback = function(e) {
-        called = (e instanceof Eventtype) && (e.getConstructParams()[0] == "a");
+        called = (e instanceof Eventtype) && (e.getConstructParams()[1] == "a");
       };
       
       Manager.addListener(testTarget, "testevent4", callback);
@@ -149,7 +152,7 @@ core.Module("lowland.test.events.EventManager", {
       var called = false;
       
       var callback = function(e) {
-        called = (e instanceof Eventtype) && (e.getConstructParams()[0] == "a") && (e.getConstructParams()[1] == "z");
+        called = (e instanceof Eventtype) && (e.getConstructParams()[1] == "a") && (e.getConstructParams()[2] == "z");
       };
       
       Manager.addListener(testTarget, "testevent5", callback);
@@ -203,6 +206,15 @@ core.Module("lowland.test.events.EventManager", {
       ok(!Manager.hasListener(testTarget, "testevent11"), "Has no listener 11");
       ok(!Manager.hasListener(testTarget, "testevent12"), "Has no listener 12");
       ok(!Manager.hasListener(testTarget, "testevent13"), "Has no listener 13");
+    });
+    
+    test("get target", function() {
+      var callback = function(e) {
+        equal(e.getTarget(), testTarget);
+      };
+      
+      Manager.addListener(testTarget, "testevent14", callback);
+      Manager.fireEvent(testTarget, "testevent14", lowland.events.Event);
     });
     
     

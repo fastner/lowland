@@ -54,6 +54,10 @@
         
         if (targetStore) {
           if (callback) {
+            if (!context) {
+              context = target;
+            }
+            
             for (var i=0,ii=targetStore.length; i<ii; i++) {
               var t = targetStore[i];
               if (t[0] == callback && t[1] == context) {
@@ -138,7 +142,8 @@
       var etf = null;
       if (eventClass) {
         etf = function() {
-          eventClass.apply(this, eventParameter);
+          var params = [target].concat(eventParameter);
+          eventClass.apply(this, params);
         };
         etf.prototype = new eventClass();
       }

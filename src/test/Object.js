@@ -8,9 +8,13 @@ core.Module("lowland.test.Object", {
 
     core.Class("EventClass", {
       include : [lowland.Object],
+      construct : function() {
+        lowland.Object.call(this);
+      },
       events : {
         "testevent" : Testevent
-      }
+      },
+      members: {}
     });
 
     core.Class("UserDataClass", {

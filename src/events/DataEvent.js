@@ -6,12 +6,16 @@
 */
 
 core.Class("lowland.events.DataEvent", {
+  include : [lowland.events.Event],
+  
   properties : {
     data : {},
     oldData : {}
   },
   
-  construct : function(value, oldValue) {
+  construct : function(target, value, oldValue) {
+    lowland.events.Event.call(this, target);
+    
     if (value) {
       this.setData(value);
     }
