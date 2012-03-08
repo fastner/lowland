@@ -143,7 +143,7 @@
 
   SUPPORT_TEXT_EVENTS = hasInterface('TextEvent'),
 
-  SUPPORT_TOUCH_EVENTS = hasInterface('TouchEvent'),
+  SUPPORT_TOUCH_EVENTS = false && hasInterface('TouchEvent'),
 
   SUPPORT_MOUSE_EVENTS = hasInterface('MouseEvent'),
 
@@ -651,7 +651,7 @@
   // this is performed using native DOM Event API if possible
   // so the event propagates to other DOM listening instances
   dispatch = W3C_MODEL ?
-    // W3C event model
+    // W3C event model // TODO modifier
     function(element, type, capture, options) {
 
       var event, d = getDocument(element), view = d.defaultView;
@@ -697,13 +697,15 @@
         event.initEvent(type, options.bubbles || true, options.cancelable || true);
 
       }
-
+      
+      for (var key in options) event[key] = options[key];
+      
       if (FormActivationEvents[type]) event.propagated = true;
 
       return element.dispatchEvent(event);
     } : MSIE_MODEL ?
     // IE event model
-    function(element, type, capture, options) {
+    function(element, type, capture, options, modifier) {
 
       if (isSupported(type)) {
         var event = getDocument(element).createEventObject();
