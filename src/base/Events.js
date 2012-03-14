@@ -3,9 +3,13 @@ core.Class("lowland.base.Events", {
   
   members : {
     fireEvent : function(type, value, old) {
+      this.fireSpecialEvent(type, [value, old]);
+    },
+    
+    fireSpecialEvent : function(type, args) {
       var events = core.Class.getEvents(this.constructor);
       var cls = events[type] || lowland.events.Event;
-      lowland.events.EventManager.fireEvent(this, type, cls, [value, old]);
+      lowland.events.EventManager.fireEvent(this, type, cls, args);
     },
     
     addListener : function(event, callback, context) {
