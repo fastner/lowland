@@ -15,5 +15,6 @@ $(function() {
   lowland.test.base.UserData.test();
   lowland.test.Object.test();
   lowland.test.bom.Font.test();
+  lowland.test.util.Base64.test();
   
 });
