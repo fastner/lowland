@@ -22,14 +22,14 @@ core.Module("lowland.test.util.Base64", {
       var orig = "✓ à la mode";
       var result = "4pyTIMOgIGxhIG1vZGU=";
       
-      equal(result, lowland.util.Base64.encode(orig));
+      equal(result, lowland.util.Base64.utf8Encode(orig));
     });
     
     test("base64 to utf8 text", function() {
       var orig = "4pyTIGFub3RoZXIgdGVzdA==";
       var result = "✓ another test";
       
-      equal(result, lowland.util.Base64.decode(orig));
+      equal(result, lowland.util.Base64.utf8Decode(orig));
     });
   }
 });
