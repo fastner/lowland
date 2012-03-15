@@ -6,10 +6,6 @@
 */
 
 core.Class("lowland.events.Event", {
-  properties : {
-    data : {}
-  },
-  
   construct : function(target) {
     this.__target = target;
   },
