@@ -19,5 +19,6 @@ $(function() {
   lowland.test.util.Base64.test();
   lowland.test.bom.Xhr.test();
   lowland.test.ObjectManager.test();
+  lowland.test.util.Object.test();
   
 });
