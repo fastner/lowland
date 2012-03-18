@@ -28,7 +28,8 @@
       },
       
       timeout : {
-        type: "Integer"
+        type: "Integer",
+        init: 10000
       },
       
       cache : {
@@ -122,7 +123,10 @@
       },
       
       __timeoutHandler : function() {
-        this.__request.abort();
+        var req = this.__request;
+        if (req && req.abort) {
+          req.abort();
+        }
         this.__aborted = true;
         
         this.fireEvent("done", this);

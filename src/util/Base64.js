@@ -1,3 +1,10 @@
+/*
+==================================================================================================
+  Lowland - JavaScript low level functions
+  Copyright (C) 2012 Sebatian Fastner
+==================================================================================================
+*/
+
 // TODO : add http://stackoverflow.com/a/246813
 
 core.Module("lowland.util.Base64", {
