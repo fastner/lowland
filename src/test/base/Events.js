@@ -4,52 +4,20 @@ core.Module("lowland.test.base.Events", {
     
     module("lowland.base.UserData");
     
+    core.Class("EventTestClass", {
+      include : [lowland.Object],
+      construct : function() {
+        lowland.Object.call(this);
+      },
+      events : {
+        "testevent" : lowland.events.Event
+      },
+      members: {}
+    });
+    
     test("test for class", function() {
       ok(!!(new lowland.base.Events()), "Queue manager implemented");
     });
     
-    test("test set function", function() {
-      var Test = new lowland.base.Events();
-      ok(!!Test.setUserData, "Has set function");
-      
-      raises(function() {
-        Test.setUserData();
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Register without parameter");
-      
-      raises(function() {
-        Test.setUserData("key");
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Register with name only");
-    });
-    
-    test("test get function", function() {
-      var Test = new lowland.base.UserData();
-      ok(!!Test.getUserData, "Has get function");
-      
-      raises(function() {
-        Test.getUserData();
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Get without parameter");
-    });
-
-    test("test set and get function", function() {
-      var Test = new lowland.base.UserData();
-      
-      Test.setUserData("a", "b");
-      ok(Test.getUserData("a") == "b", "Set and get equals");
-    });
-    
-    test("test set and remove function", function() {
-      var Test = new lowland.base.UserData();
-      
-      Test.setUserData("a", "b");
-      Test.removeUserData("a");
-      ok(Test.getUserData("a") === undefined, "Set and get equals");
-    });
-
   }
 });

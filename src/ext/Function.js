@@ -20,8 +20,8 @@
       event.stopPropagation();
       if (timeouts.length > 0) {
         var timeout = timeouts.shift();
-        
-        timeout[0].apply(timeout[0], timeout[1]);
+
+        timeout[0].apply(timeout[1], timeout[2]);
       }
     }
   };
@@ -31,7 +31,7 @@
     
     delay : function(time, context) {
       var func = this;
-      setTimeout(function(context, args) {
+      return setTimeout(function(context, args) {
         func.apply(context, args);
       }, time, context, slice.call(arguments, 2));
     },
@@ -39,8 +39,10 @@
     /**
      * Based upon work of http://dbaron.org/log/20100309-faster-timeouts
      */
-    lazy : function(func) {
-      timeouts.push([func, slice.call(arguments,1)]);
+    lazy : function(context) {
+      context = context || this;
+      //timeouts.push([func, slice.call(arguments,1)]);
+      timeouts.push([this, context, slice.call(arguments,1)]);
       postMessage(messageName, "*");
     }
   });

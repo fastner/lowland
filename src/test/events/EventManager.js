@@ -83,7 +83,7 @@ core.Module("lowland.test.events.EventManager", {
       ok(!Manager.hasListener(testTarget, "testevent1", function() {}), "Has listener that is added but has other callback");
     });
     
-    test("add and fire events", function() {
+    asyncTest("add and fire events", function() {
       ok(!!Manager.fireEvent, "fireEvent function");
       
       raises(function() {
@@ -103,62 +103,69 @@ core.Module("lowland.test.events.EventManager", {
       var called = false;
       
       var callback = function() {
-        called = true;
+        ok(true, "Listener callback called");
+        start();
       };
       
       Manager.addListener(testTarget, "testevent2", callback);
       Manager.fireEvent(testTarget, "testevent2");
-      ok(called, "Listener callback called");
     });
+    stop();
     
-    test("context", function() {
+    asyncTest("context", function() {
       var called = false;
       var context = { id : "123" };
       
       var callback = function() {
-        called = this;
+        equals(context, this);
+        start();
       };
       
       Manager.addListener(testTarget, "testevent3", callback, context);
       Manager.fireEvent(testTarget, "testevent3");
-      ok(called === context, "Listener callback called with same context");
     });
+    stop();
     
-    test("Event type", function() {
+    asyncTest("Event type", function() {
       var called = false;
       
       var callback = function(e) {
-        called = (e instanceof Eventtype);
+        ok(e instanceof Eventtype);
+        start();
       };
       
       Manager.addListener(testTarget, "testevent3", callback);
       Manager.fireEvent(testTarget, "testevent3", Eventtype);
-      ok(called, "Listener callback called with event type class");
     });
+    stop();
     
-    test("Event type with one parameter", function() {
+    asyncTest("Event type with one parameter", function() {
       var called = false;
       
       var callback = function(e) {
         called = (e instanceof Eventtype) && (e.getConstructParams()[1] == "a");
+        ok(called, "Listener callback called with event type class and one parameter");
+        start();
       };
       
       Manager.addListener(testTarget, "testevent4", callback);
       Manager.fireEvent(testTarget, "testevent4", Eventtype, ["a"]);
-      ok(called, "Listener callback called with event type class and one parameter");
     });
+    stop();
     
-    test("Event type with two parameter", function() {
+    asyncTest("Event type with two parameter", function() {
       var called = false;
       
       var callback = function(e) {
         called = (e instanceof Eventtype) && (e.getConstructParams()[1] == "a") && (e.getConstructParams()[2] == "z");
+        ok(called, "Listener callback called with event type class and one parameter");
+        start();
       };
       
       Manager.addListener(testTarget, "testevent5", callback);
       Manager.fireEvent(testTarget, "testevent5", Eventtype, ["a", "z"]);
-      ok(called, "Listener callback called with event type class and one parameter");
     });
+    stop();
     
     test("remove events", function() {
       var fnt1 = function() {};
@@ -208,188 +215,31 @@ core.Module("lowland.test.events.EventManager", {
       ok(!Manager.hasListener(testTarget, "testevent13"), "Has no listener 13");
     });
     
-    test("get target", function() {
+    asyncTest("get target", function() {
       var callback = function(e) {
         equal(e.getTarget(), testTarget);
+        start();
       };
       
       Manager.addListener(testTarget, "testevent14", callback);
       Manager.fireEvent(testTarget, "testevent14", lowland.events.Event);
     });
+    stop();
     
-    
-    
-    
-    /*
-    test("test of register function", function() {
-      ok(!!Manager.register, "Has registration function");
-      
-      raises(function() {
-        Manager.register();
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Register without parameter");
-      
-      raises(function() {
-        Manager.register("name");
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Register with name only");
-      
-      raises(function() {
-        Manager.register(null, function(){});
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Register with callback only");
-    });
-    
-    test("test run of queue", function() {
-      raises(function() {
-        Manager.run();
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Run without parameter");
-    });
-    
-    asyncTest("test of real register and run", function() {
-      Manager.clear();
+    asyncTest("lazy event handling", function() {
       var called = false;
       
-      Manager.register("trr", function() {
+      var callback = function() {
         called = true;
-      });
-      
-      Manager.run("trr");
-      if (called) {
-        ok(false, "called imediately");
+        ok("Test event fired");
         start();
-      } else {
-        var okFnt = function() {
-          ok(called, "called delayed");
-          start();
-        };
-        
-        window.setTimeout(okFnt, 0);
-      }
+      };
+      
+      Manager.addListener(testTarget, "testevent15", callback);
+      Manager.fireEvent(testTarget, "testevent15", lowland.events.Event);
+      
+      equal(false, called);
     });
     stop();
-    
-    asyncTest("test order of registered callbacks, ordered run", function() {
-      Manager.clear();
-      var callstack = [];
-      
-      Manager.register("t1", function() {
-        callstack.push("t1");
-      });
-      Manager.register("t2", function() {
-        callstack.push("t2");
-      }, this, "t1");
-      
-      Manager.run("t1");
-      Manager.run("t2");
-      
-      window.setTimeout(function() {
-        ok(callstack.length == 2 && callstack[0] == "t1" && callstack[1] == "t2", "Order of handlers with simple dependsOn paramter is right");
-        start();
-      }, 10);
-    });
-    stop();
-    
-    asyncTest("test order of registered callbacks, unordered run", function() {
-      Manager.clear();
-      var callstack = [];
-      
-      Manager.register("t3", function() {
-        callstack.push("t3");
-      });
-      Manager.register("t4", function() {
-        callstack.push("t4");
-      }, this, "t3");
-      
-      Manager.run("t4");
-      Manager.run("t3");
-      
-      window.setTimeout(function() {
-        ok(callstack.length == 2 && callstack[0] == "t3" && callstack[1] == "t4", "Order of handlers with simple dependsOn paramter is right");
-        start();
-      }, 10);
-    });
-    stop();
-    
-    asyncTest("test complex order of registered callbacks, unordered run", function() {
-      Manager.clear();
-      var callstack = [];
-      
-      Manager.register("t7", function() {
-        callstack.push("t7");
-      }, this, "t5");
-      Manager.register("t8", function() {
-        callstack.push("t8");
-      }, this, ["t5", "t6"]);
-      Manager.register("t5", function() {
-        callstack.push("t5");
-      });
-      Manager.register("t6", function() {
-        callstack.push("t6");
-      }, this, "t5");
-      
-      Manager.run("t5");
-      Manager.run("t7");
-      Manager.run("t8");
-      Manager.run("t6");
-      
-      window.setTimeout(function() {
-        var c = callstack;
-        ok(c.length == 4 && c[0] == "t5" && 
-           (c.indexOf("t7") > c.indexOf("t5")) &&
-           (c.indexOf("t8") > c.indexOf("t5")) &&
-           (c.indexOf("t8") > c.indexOf("t6")) &&
-           (c.indexOf("t6") > c.indexOf("t5")),
-           "Order of handlers with simple dependsOn paramter is right");
-        start();
-      }, 10);
-    });
-    stop();
-    
-    asyncTest("test flush only once if called many times", function() {
-      Manager.clear();
-      var called = 0;
-      
-      Manager.register("t9", function() {
-        called++;
-      });
-      
-      Manager.run("t9");
-      Manager.run("t9");
-      Manager.run("t9");
-      
-      window.setTimeout(function() {
-        ok(called == 1, "Real flush only called once");
-        start();
-      }, 10);
-    });
-    stop();
-    
-    asyncTest("test flush twice if called asynchronously after js event queue", function() {
-      Manager.clear();
-      var called = 0;
-      
-      Manager.register("t10", function() {
-        called++;
-      });
-      
-      Manager.run("t10");
-      
-      window.setTimeout(function() {
-        Manager.run("t10");
-      }, 60);
-      
-      window.setTimeout(function() {
-        ok(called == 2, "Flush called twice -> asynchronously with enough time");
-        start();
-      }, 100);
-    });
-    stop();
-    */
   }
 });

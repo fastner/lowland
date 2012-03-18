@@ -129,6 +129,9 @@
       delete eventStore[target.getHash()];
     },
     
+    /**
+     * #require(lowland.ext.Function)
+     */
     fireEvent : function(target, event, eventClass, eventParameter) {
       if (core.Env.getValue("debug")) {
         if (!target) {
@@ -158,9 +161,9 @@
             
             if (t) {
               if (etf) {
-                t[0].call(t[1], new etf());
+                t[0].lazy(t[1], new etf());
               } else {
-                t[0].call(t[1]);
+                t[0].lazy(t[1]);
               }
             }
           }

@@ -143,20 +143,24 @@
         equal(true, result.open.async);
         equal(null, result.open.user);
       });
-      
+      /*
       asyncTest("done event", function() {
+        expect(1);
+        stop();
+        
         var result = {};
         XHRSpy(XMLHttpRequest, result);
         
         var x = new lowland.bom.Xhr();
         x.addListener("done", function(e) {
-          equal("ok", e.getData().getRequest().readyState);
+          console.log(e.getData());
+          ok(e.getData().getReadyState() == 4);
           start();
         }, this);
         x.setUrl("http://www.example.com");
         x.send();
-      });
-      stop();
+        x.setReadyState(4);
+      });*/
       
     }
   });

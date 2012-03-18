@@ -9,6 +9,7 @@ core.Class("lowland.base.Events", {
     fireSpecialEvent : function(type, args) {
       var events = core.Class.getEvents(this.constructor);
       var cls = events[type] || lowland.events.Event;
+      
       lowland.events.EventManager.fireEvent(this, type, cls, args);
     },
     

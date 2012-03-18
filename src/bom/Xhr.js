@@ -3,6 +3,12 @@
   
   var XHR = global.XMLHttpRequest;
   
+  var READYSTATE_UNSENT = 0;
+  var READYSTATE_OPENED = 1;
+  var READYSTATE_HEADERS_RECEIVED = 2;
+  var READYSTATE_LOADING = 3;
+  var READYSTATE_DONE = 4;
+  
   core.Class("lowland.bom.Xhr", {
     include : [ lowland.Object ],
     
@@ -13,7 +19,7 @@
     },
     
     events : {
-      "done" : lowland.events.DataEvent
+      done : lowland.events.DataEvent
     },
     
     properties : {
@@ -39,6 +45,9 @@
       __requestHeaders : null,
       __data : null,
       __request : null,
+      __readyState : 0,
+      __timeoutHandle : null,
+      __aborted : false,
       
       setRequestData : function(data) {
         this.__data = data;
@@ -71,18 +80,51 @@
         request.onreadystatechange = this._onReadyStateChange.bind(this);
         request.open(this.getMethod(), this.getUrl(), true);
         request.send();
+        
+        this.__aborted = false;
+        this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout());
       },
       
-      getResponseText : function() {},
-      getResponseType : function() {},
-      getResponseXML : function() {},
-      getStatus : function() {},
+      getResponseText : function() {
+        return this.__request.responseText;
+      },
       
-      getRequestStatus : function() {
+      getResponseType : function() {
+        return this.__request.getResponseHeader("Content-Type");
+      },
+      
+      getResponseXML : function() {
+        return this.__request.responseXML;
+      },
+      
+      getStatus : function() {
+        return this.__request.status;
+      },
+      
+      getRequest : function() {
         return this.__request;
       },
       
+      getReadyState : function() {
+        return this.__readyState;
+      },
+      
       _onReadyStateChange : function() {
+        var readyState = this.__readyState = this.__request.readyState;
+        
+        if (readyState == READYSTATE_DONE && !this.__aborted) {
+          var timeoutHandle = this.__timeoutHandle;
+          if (timeoutHandle) {
+            global.clearTimeout(this.__timeoutHandle);
+          }
+          this.fireEvent("done", this);
+        }
+      },
+      
+      __timeoutHandler : function() {
+        this.__request.abort();
+        this.__aborted = true;
+        
         this.fireEvent("done", this);
       }
     }

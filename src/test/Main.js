@@ -13,6 +13,7 @@ $(function() {
   lowland.test.QueueManager.test();
   lowland.test.events.EventManager.test();
   lowland.test.base.UserData.test();
+  lowland.test.base.Events.test();
   lowland.test.Object.test();
   lowland.test.bom.Font.test();
   lowland.test.util.Base64.test();
