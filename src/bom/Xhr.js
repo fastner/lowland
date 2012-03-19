@@ -76,14 +76,28 @@
       },
       
       send : function() {
-        var request = this.__request = XHR ? new XHR : new ActiveXObject("Microsoft.XMLHTTP");
+        var request = this.__request = XHR ? new XHR() : new ActiveXObject("Microsoft.XMLHTTP");
         
         request.onreadystatechange = this._onReadyStateChange.bind(this);
         request.open(this.getMethod(), this.getUrl(), true);
         request.send();
         
         this.__aborted = false;
-        this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout());
+        var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout());
+        
+        // Fixes for IE memory leaks, from core.io.Text
+        if (core.Env.isSet("engine", "trident") && global.attachEvent) {
+          var onUnload = function() {
+            global.detachEvent("onunload", onUnload);
+            request.onreadystatechange = empty;
+            clearTimeout(timeoutHandle);
+
+            // Internet Explorer will keep connections alive if we don't abort on unload
+            request.abort();
+          };
+
+          global.attachEvent("onunload", onUnload);
+        }
       },
       
       getResponseText : function() {
