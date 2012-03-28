@@ -1,6 +1,10 @@
 core.Class("lowland.base.Events", {
   implement : [core.property.IEvent],
   
+  construct : function() {
+    this.__nativeListeners = {};
+  },
+  
   members : {
     __nativeListeners : null,
     
@@ -63,9 +67,7 @@ core.Class("lowland.base.Events", {
       }
       
       var nativeListeners = this.__nativeListeners;
-      if (!nativeListeners) {
-        nativeListeners = this.__nativeListeners = {};
-      }
+      
       if (!nativeListeners[callback]) {
         nativeListeners[callback] = {};
       }
@@ -82,7 +84,14 @@ core.Class("lowland.base.Events", {
       if (!context) {
         context = this;
       }
-      var boundCallback = this.__nativeListeners[callback][context];
+      var nlCallback = this.__nativeListeners[callback];
+      if (!nlCallback) {
+        return;
+      }
+      var boundCallback = nlCallback[context];
+      if (!boundCallback) {
+        return;
+      }
       lowland.bom.Events.unlisten(element, event, boundCallback);
     }
   }
