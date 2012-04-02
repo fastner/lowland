@@ -75,15 +75,37 @@
         }
       },
       
+      getRequestHeaders : function() {
+        return this.__requestHeaders;
+      },
+      
+      getResponseHeader : function(key) {
+        var req = this.__request;
+        
+        if (req.readyState == 3 || req.readyState == 4) {
+          return this.__request.getResponseHeader(key);
+        } else {
+          return null;
+        }
+      },
+      
       send : function() {
         var request = this.__request = XHR ? new XHR() : new ActiveXObject("Microsoft.XMLHTTP");
         
         request.onreadystatechange = this._onReadyStateChange.bind(this);
         request.open(this.getMethod(), this.getUrl(), true);
+        
+        var requestHeaders = this.__requestHeaders;
+        for (var key in requestHeaders) {
+          var value = requestHeaders[key];
+          
+          request.setRequestHeader(key, value);
+        }
+        
         request.send();
         
         this.__aborted = false;
-        var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout());
+        var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout(), this);
         
         // Fixes for IE memory leaks, from core.io.Text
         if (core.Env.isSet("engine", "trident") && global.attachEvent) {
@@ -132,7 +154,7 @@
           if (timeoutHandle) {
             global.clearTimeout(this.__timeoutHandle);
           }
-          this.fireEvent("done", this);
+          this.fireEvent("done", this, "done");
         }
       },
       
@@ -142,8 +164,8 @@
           req.abort();
         }
         this.__aborted = true;
-        
-        this.fireEvent("done", this);
+
+        this.fireEvent("done", this, "timeout");
       }
     }
   });
