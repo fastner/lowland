@@ -10,7 +10,7 @@ core.Class("lowland.base.UserData", {
           throw new Error("Parameter key not set");
         }
         if (!value) {
-          throw new Error("Parameter value not set");
+          console.warn("Parameter value not set for key " + key);
         }
       }
       
