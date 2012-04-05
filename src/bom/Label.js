@@ -32,11 +32,24 @@
     },
     
     getHtmlSize : function(content, style, width) {
-      console.log("GET HTML SIZE");
+      var protectStyle = {
+        width: width + "px",
+        whiteSpace: "normal",
+        fontFamily: style.fontFamily || "",
+        fontWeight: style.fontWeight || "",
+        fontSize: style.fontSize || "",
+        fontStyle: style.fontStyle || "",
+        lineHeight: style.lineHeight || ""
+      };
+      core.bom.Style.set(measureElement, protectStyle);
+      measureElement.innerHTML = content;
+      
+      return lowland.bom.Element.getContentSize(measureElement);
     },
     
     getTextSize : function(content, style) {
       var protectStyle = {
+        width: "inherit",
         whiteSpace: "no-wrap",
         fontFamily: style.fontFamily || "",
         fontWeight: style.fontWeight || "",
@@ -50,9 +63,7 @@
       return lowland.bom.Element.getContentSize(measureElement);
     },
     
-    setValue : function(label, content) {
-      var html = !!label.getAttribute("html");
-      
+    setValue : function(label, content, html) {
       if (html) {
         label.innerHTML = content;
       } else {
