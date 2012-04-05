@@ -39,6 +39,10 @@
       method : {
         type: ["GET", "POST", "DELETE", "OPTIONS", "HEAD", "PUT"],
         init: "GET"
+      },
+      
+      async : {
+        init: true
       }
     },
     
@@ -98,11 +102,17 @@
         var requestHeaders = this.__requestHeaders;
         for (var key in requestHeaders) {
           var value = requestHeaders[key];
-          
           request.setRequestHeader(key, value);
         }
+        if (!requestHeaders["Content-Type"]) {
+          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        }
         
-        request.send();
+        if (this.__data) {
+          request.send(this.__data);
+        } else {
+          request.send();
+        }
         
         this.__aborted = false;
         var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout(), this);
@@ -154,7 +164,7 @@
           if (timeoutHandle) {
             global.clearTimeout(this.__timeoutHandle);
           }
-          this.fireEvent("done", this, "done");
+          this.fireEvent("done", "done");
         }
       },
       
@@ -165,7 +175,37 @@
         }
         this.__aborted = true;
 
-        this.fireEvent("done", this, "timeout");
+        this.fireEvent("done", "timeout");
+      },
+      
+      __toUriParameter : function(key, value, parts, post) {
+        var encode = window.encodeURIComponent;
+        if (post) {
+          parts.push(encode(key).replace(/%20/g, "+") + "=" +
+            encode(value).replace(/%20/g, "+"));
+        } else {
+          parts.push(encode(key) + "=" + encode(value));
+        }
+      },
+      
+      urlify : function(obj, post) {
+        var key,
+            parts = [];
+  
+        for (key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            var value = obj[key];
+            if (value instanceof Array) {
+              for (var i=0; i<value.length; i++) {
+                this.__toUriParameter(key, value[i], parts, post);
+              }
+            } else {
+              this.__toUriParameter(key, value, parts, post);
+            }
+          }
+        }
+  
+        return parts.join("&");
       }
     }
   });
