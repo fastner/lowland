@@ -15,7 +15,7 @@
   var timeouts = [];
   var messageName = "$$lowland-zero-timeout-message";
   
-  var handleMessage = function() {
+  var handleMessage = function(event) {
     if (event.source == window && event.data == messageName) {
       event.stopPropagation();
       if (timeouts.length > 0) {
