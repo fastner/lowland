@@ -1036,6 +1036,30 @@
   
 
 
+  var hooks = {};
+  var registerHook = function(type, handler) {
+    if (core.Env.getValue("debug") && hooks[type]) {
+      console.warn("Hook for event type " + type + " already set");
+    }
+    hooks[type] = handler;
+  };
+  
+  var hookListen = function(element, type, handler, capture) {
+    var hook = hooks[type];
+    if (hook) {
+      hook.listen(element, type, handler, capture);
+    } else {
+      listen(element, type, handler, capture);
+    }
+  };
+  var hookUnlisten = function(element, type, handler, capture) {
+    var hook = hooks[type];
+    if (hook) {
+      hook.listen(element, type, handler, capture);
+    } else {
+      unlisten(element, type, handler, capture);
+    }
+  };
 
   core.Module("lowland.bom.Events", {
     // detected event model, ms or w3c
@@ -1060,8 +1084,8 @@
     register : register,
     unregister : unregister,
   
-    listen : listen,
-    unlisten : unlisten,
+    listen : hookListen,
+    unlisten : hookUnlisten,
   
     delegate : delegate,
     undelegate : undelegate,
@@ -1090,7 +1114,9 @@
     isSupported : isSupported,
   
     enablePropagation : enablePropagation,
-    disablePropagation : disablePropagation
+    disablePropagation : disablePropagation,
+    
+    registerHook : registerHook
   });
   
 })(this);
