@@ -25,7 +25,6 @@
         bound=true;
         startListen();
       }
-      console.log("LISTEN TO HOOK hook_" + type);
       lowland.bom.Events.listen(element, "hook_"+type, handler ,capture);
     },
     unlisten : function(element, type, handler, capture) {
