@@ -13,6 +13,9 @@
 (function(global) {
   var id = 0;
   
+  /**
+   * General base object supporting events, userdefined data, debug output and a hash system.
+   */
   core.Class("lowland.Object", {
     include : [core.property.MGeneric, lowland.base.UserData, lowland.base.Events],
     
@@ -24,18 +27,30 @@
     },
     
     members : {
+      /**
+       * Write debug messages to console.
+       */
       debug : function() {
         console.log(this.constructor || this, arguments);
       },
       
+      /**
+       * Write errors to console.
+       */
       error : function() {
         console.error(this.constructor || this, arguments);
       },
       
+      /**
+       * Write warnings to console.
+       */
       warn : function() {
         console.warn(this.constructor || this, arguments);
       },
       
+      /**
+       * {String} Returns unique hash code pointing to this class.
+       */
       getHash : function() {
         return this.$$hash;
       }
