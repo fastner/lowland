@@ -7,19 +7,28 @@
 
 (function(global) {
   
-  var measureElement = global.document.createElement("div");
-  core.bom.Style.set(measureElement, {
-    height: "auto",
-    width: "auto",
-    left: "-10000px",
-    top: "-10000px",
-    position: "absolute",
-    overflow: "visible",
-    display: "block"
-  });
+  var measureElem = null;
   
-  var body = global.document.body;
-  body.insertBefore(measureElement, body.firstChild);
+  var getMeasureElement = function() {
+    if (measureElem) {
+      return measureElem;
+    }
+    
+    var doc = global.document;
+    measureElem = doc.createElement("div");
+    core.bom.Style.set(measureElem, {
+      height: "auto",
+      width: "auto",
+      left: "-10000px",
+      top: "-10000px",
+      position: "absolute",
+      overflow: "visible",
+      display: "block"
+    });
+    
+    var body = doc.body;
+    body.insertBefore(measureElem, body.firstChild);
+  };
   
   core.Module("lowland.bom.Label", {
     create : function(value, html) {
@@ -41,6 +50,7 @@
         fontStyle: style.fontStyle || "",
         lineHeight: style.lineHeight || ""
       };
+      var measureElement = getMeasureElement();
       core.bom.Style.set(measureElement, protectStyle);
       measureElement.innerHTML = content;
       
@@ -57,6 +67,7 @@
         fontStyle: style.fontStyle || "",
         lineHeight: style.lineHeight || ""
       };
+      var measureElement = getMeasureElement();
       core.bom.Style.set(measureElement, protectStyle);
       this.__setText(measureElement, content);
       
