@@ -25,7 +25,7 @@
       }
     }
   };
-  addEventListener("message", handleMessage, true);
+  lowland.bom.Events.set(window, "message", handleMessage, true);
   
   core.Main.addMembers("Function", {
     

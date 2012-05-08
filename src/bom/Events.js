@@ -734,10 +734,10 @@
   notify =
     function(element, type, capture, options) {
       if (typeof capture !== 'undefined') {
-        return propagatePhase(element, type, !!capture);
+        return propagatePhase(element, type, !!capture, options);
       }
-      return (propagatePhase(element, type, true) &&
-        propagatePhase(element, type, false));
+      return (propagatePhase(element, type, true, options) &&
+        propagatePhase(element, type, false, options));
     },
 
   /* =========================== EVENT PROPAGATION ========================== */
@@ -835,11 +835,11 @@
 
   // propagate event capturing or bubbling phase
   propagatePhase =
-    function(element, type, capture) {
+    function(element, type, capture, options) {
       var i, l,
         result = true,
         node = element, ancestors = [],
-        event = synthesize(element, type, capture);
+        event = synthesize(element, type, capture, options);
       // collect ancestors
       while (node) {
         ancestors.push(node);
