@@ -366,9 +366,11 @@
                 }
                 break;
               case AT_TARGET:
-                if (!done && (done = true)) {
+                // TODO: WHAT IS THIS?
+                /*if (!done && (done = true)) {
                   valid = true;
-                }
+                }*/
+                valid = true;
                 break;
               // Safari 4.x load events
               // may have eventPhase === 0
