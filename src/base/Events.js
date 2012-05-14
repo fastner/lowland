@@ -1,6 +1,12 @@
 /**
  * Generic non bubling event system for core classes.
  */
+(function() {
+  
+var debugNL = function(arr) {
+  console.log(arr);
+};
+  
 core.Class("lowland.base.Events", {
   implement : [core.property.IEvent],
   
@@ -97,17 +103,7 @@ core.Class("lowland.base.Events", {
         context = this;
       }
       
-      var nativeListeners = this.__nativeListeners;
-      
-      if (!nativeListeners[callback]) {
-        nativeListeners[callback] = {};
-      }
-      if (!nativeListeners[callback][context]) {
-        boundCallback = nativeListeners[callback][context] = callback.bind(context);
-      } else {
-        boundCallback = nativeListeners[callback][context];
-      }
-      
+      boundCallback = lowland.events.BindManager.bind(callback, context);
       lowland.bom.Events.listen(element, event, boundCallback);
     },
     
@@ -118,15 +114,11 @@ core.Class("lowland.base.Events", {
       if (!context) {
         context = this;
       }
-      var nlCallback = this.__nativeListeners[callback];
-      if (!nlCallback) {
-        return;
-      }
-      var boundCallback = nlCallback[context];
-      if (!boundCallback) {
-        return;
-      }
+      
+      var boundCallback = lowland.events.BindManager.bind(callback, context);
       lowland.bom.Events.unlisten(element, event, boundCallback);
     }
   }
 });
+
+})();
