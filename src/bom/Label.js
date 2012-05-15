@@ -28,6 +28,8 @@
     
     var body = doc.body;
     body.insertBefore(measureElem, body.firstChild);
+    
+    return measureElem;
   };
   
   core.Module("lowland.bom.Label", {
