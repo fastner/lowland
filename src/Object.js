@@ -56,6 +56,20 @@
        */
       destruct : function() {
         lowland.base.UserData.prototype.destruct.call(this);
+      },
+      
+      /**
+       * {String} Return unique identifier string of class
+       */
+      valueOf : function() {
+        return [this.constructor, "[", this.getHash(), "]"].join("");
+      },
+      
+      /**
+       * {String} Return unique identifier string of class
+       */
+      toString : function() {
+        return this.valueOf();
       }
     }
   });
