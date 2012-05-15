@@ -16,10 +16,10 @@ core.Class("lowland.events.DataEvent", {
   construct : function(target, value, oldValue) {
     lowland.events.Event.call(this, target);
     
-    if (value) {
+    if (value !== undefined) {
       this.setData(value);
     }
-    if (oldValue) {
+    if (oldValue !== undefined) {
       this.setOldData(oldValue);
     }
   }
