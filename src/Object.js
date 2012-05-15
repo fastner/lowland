@@ -27,21 +27,21 @@
        * Write debug messages to console.
        */
       debug : function() {
-        console.log(this.constructor || this, arguments);
+        console.log(this.valueOf(), arguments);
       },
       
       /**
        * Write errors to console.
        */
       error : function() {
-        console.error(this.constructor || this, arguments);
+        console.error(this.valueOf(), arguments);
       },
       
       /**
        * Write warnings to console.
        */
       warn : function() {
-        console.warn(this.constructor || this, arguments);
+        console.warn(this.valueOf(), arguments);
       },
       
       /**
@@ -62,7 +62,7 @@
        * {String} Return unique identifier string of class
        */
       valueOf : function() {
-        return [this.constructor, "[", this.getHash(), "]"].join("");
+        return [this.constructor || this, "[", this.getHash(), "]"].join("");
       },
       
       /**
