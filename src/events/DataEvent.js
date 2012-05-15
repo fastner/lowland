@@ -9,8 +9,8 @@ core.Class("lowland.events.DataEvent", {
   include : [lowland.events.Event],
   
   properties : {
-    data : {},
-    oldData : {}
+    data : { nullable: true },
+    oldData : { nullable: true }
   },
   
   construct : function(target, value, oldValue) {
