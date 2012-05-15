@@ -53,6 +53,13 @@
        */
       getHash : function() {
         return this.$$hash;
+      },
+      
+      /**
+       * Destucts object
+       */
+      destruct : function() {
+        lowland.base.UserData.prototype.destruct.call(this);
       }
     }
   });

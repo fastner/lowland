@@ -47,6 +47,13 @@ core.Class("lowland.base.UserData", {
       }
       
       this.__$$userdata[key] = undefined;
+    },
+    
+    /**
+       * Destucts user data object
+       */
+    destruct : function() {
+      this.__$$userdata = null;
     }
   }
 });
