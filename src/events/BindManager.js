@@ -4,8 +4,7 @@
   Copyright (C) 2012 Sebatian Fastner
 ==================================================================================================
 */
-
-(function() {
+(function(core, lowland) {
   var binds = {};
   
   var dbg = function() {
@@ -23,9 +22,11 @@
   
   core.Module("lowland.events.BindManager", {
     bind : function(callback, context) {
-      var ctxBind = binds[context];
+      var ctxHash = lowland.ObjectManager.getHash(context);
+      
+      var ctxBind = binds[ctxHash];
       if (!ctxBind) {
-        ctxBind = binds[context] = {
+        ctxBind = binds[ctxHash] = {
           count: 0
         };
       }
@@ -44,7 +45,8 @@
     },
     
     unbind : function(callback, context) {
-      var ctxBind = binds[context];
+      var ctxHash = lowland.ObjectManager.getHash(context);
+      var ctxBind = binds[ctxHash];
       
       if (!ctxBind) {
         return false;
@@ -63,10 +65,10 @@
         ctxBind.count--;
         
         if (ctxBind.count <= 0) {
-          binds[context] = null;
-          delete binds[context];
+          binds[ctxHash] = null;
+          delete binds[ctxHash];
         }
       }
     }
   });
-})();
+})(window.core, window.lowland);

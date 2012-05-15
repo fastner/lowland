@@ -8,18 +8,28 @@
 (function(global) {
   
   var objectRegistry = {};
+  var id = 0;
   
   /**
    * Generic queue manager supporting simple dependency dissolving.
    */
   core.Module("lowland.ObjectManager", {
+    getHash : function(obj) {
+      if (obj.$$hash) {
+        return obj.$$hash;
+      }
+      
+      return obj.$$hash = id++;
+    },
+    
     register : function(obj) {
-      objectRegistry[obj.getHash()] = obj;
+      objectRegistry[this.getHash(obj)] = obj;
     },
     
     unregister : function(obj) {
-      objectRegistry[obj.getHash()] = null;
-      delete objectRegistry[obj.getHash()];
+      var hash = this.getHash(obj);
+      objectRegistry[hash] = null;
+      delete objectRegistry[hash];
     },
     
     find : function(hash) {

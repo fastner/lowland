@@ -3,20 +3,12 @@
  */
 (function() {
   
-var debugNL = function(arr) {
-  console.log(arr);
-};
+var nativeListeners = {};
   
 core.Class("lowland.base.Events", {
   implement : [core.property.IEvent],
   
-  construct : function() {
-    this.__nativeListeners = {};
-  },
-  
   members : {
-    __nativeListeners : null,
-    
     /**
      * Fire event @type {String} on this class with special @value {var} and @old {var} parameter.
      * This method is used by core property system to fire change events.

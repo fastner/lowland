@@ -11,8 +11,6 @@
  * #require(ext.sugar.Function)
  */
 (function(global) {
-  var id = 0;
-  
   /**
    * General base object supporting events, userdefined data, debug output and a hash system.
    */
@@ -20,8 +18,6 @@
     include : [core.property.MGeneric, lowland.base.UserData, lowland.base.Events],
     
     construct : function() {
-      this.$$hash = id++;
-      
       lowland.base.UserData.call(this);
       lowland.base.Events.call(this);
     },
@@ -52,7 +48,7 @@
        * {String} Returns unique hash code pointing to this class.
        */
       getHash : function() {
-        return this.$$hash;
+        return lowland.ObjectManager.getHash(this);
       },
       
       /**
