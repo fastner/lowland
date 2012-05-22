@@ -12,9 +12,18 @@ core.Class("lowland.events.Event", {
   
   members : {
     __target : null,
+    __nativeEvent : null,
     
     getTarget : function() {
       return this.__target;
+    },
+    
+    setNativeEvent : function(native) {
+      this.__nativeEvent = native;
+    },
+    
+    getNativeEvent : function() {
+      return this.__nativeEvent;
     }
   }
 });

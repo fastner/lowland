@@ -3,8 +3,6 @@
  */
 (function() {
   
-var nativeListeners = {};
-  
 core.Class("lowland.base.Events", {
   implement : [core.property.IEvent],
   
@@ -14,17 +12,21 @@ core.Class("lowland.base.Events", {
      * This method is used by core property system to fire change events.
      */
     fireEvent : function(type, value, old) {
-      this.fireSpecialEvent(type, [value, old]);
+      return this.fireSpecialEvent(type, [value, old]);
+    },
+    
+    fireDirectEvent : function(type, value, old) {
+      return this.fireSpecialEvent(type, [value, old], true);
     },
     
     /**
      * Fire event @type {String} on this class with @args {Array} as event parameters.
      */
-    fireSpecialEvent : function(type, args) {
+    fireSpecialEvent : function(type, args, direct) {
       var events = core.Class.getEvents(this.constructor);
       var cls = events[type] || lowland.events.Event;
       
-      lowland.events.EventManager.fireEvent(this, type, cls, args);
+      return lowland.events.EventManager.fireEvent(this, type, cls, args, direct);
     },
     
     /**

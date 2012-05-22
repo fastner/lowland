@@ -132,7 +132,7 @@
     /**
      * #require(lowland.ext.Function)
      */
-    fireEvent : function(target, event, eventClass, eventParameter) {
+    fireEvent : function(target, event, eventClass, eventParameter, direct) {
       if (core.Env.getValue("debug")) {
         if (!target) {
           throw new Error("Parameter target not set");
@@ -142,6 +142,8 @@
         }
       }
       
+      var evtCls = null;
+      
       var etf = null;
       if (eventClass) {
         etf = function() {
@@ -149,6 +151,7 @@
           eventClass.apply(this, params);
         };
         etf.prototype = new eventClass();
+        evtCls = new etf();
       }
 
       var targetStore = eventStore[target.getHash()];
@@ -160,14 +163,15 @@
             var t = targetStore[i];
             
             if (t) {
-              if (etf) {
-                t[0].lazy(t[1], new etf());
+              if (direct) {
+                t[0].call(t[1], evtCls);
               } else {
-                t[0].lazy(t[1]);
+                t[0].lazy(t[1], evtCls);
               }
             }
           }
-          return true;
+          
+          return evtCls;
         }
       }
       
