@@ -56,7 +56,7 @@
       core.bom.Style.set(measureElement, protectStyle);
       measureElement.innerHTML = content;
       
-      return lowland.bom.Element.getContentSize(measureElement);
+      return this.__measureElement(measureElement);
     },
     
     getTextSize : function(content, style) {
@@ -73,7 +73,23 @@
       core.bom.Style.set(measureElement, protectStyle);
       this.__setText(measureElement, content);
       
-      return lowland.bom.Element.getContentSize(measureElement);
+      return this.__measureElement(measureElement);
+      
+    },
+    
+    __measureElement : function(element) {
+      var e = lowland.bom.Element.getContentSize(element);
+      
+      if (core.Env.getValue("engine") == "gecko") {
+        // Gecko sometimes calculates one pixel too small
+        e.width ++;
+      }
+      if (core.Env.getValue("engine") == "trident") {
+        // IE9 sometimes calculates one pixel too small
+        e.width ++;
+      }
+      
+      return e;
     },
     
     setValue : function(label, content, html) {
