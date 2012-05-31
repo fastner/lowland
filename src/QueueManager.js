@@ -16,6 +16,7 @@
   var callstack = [];
   var schedule = {};
   var runState = "stop";
+  var flushCallback = [];
   
   /**
    * Generic queue manager supporting simple dependency dissolving.
@@ -58,6 +59,14 @@
       });
       
       this.__calculateDependencies();
+    },
+    
+    registerFlushCallback : function(callback) {
+      flushCallback.push(callback);
+    },
+    
+    unregisterFlushCallback : function(callback) {
+      flushCallback.remove(callback);
     },
     
     __calculateDependencies : function() {
@@ -141,6 +150,10 @@
             throw new Error("No callback for name " + name + " registered");
           }
         }
+      }
+      
+      for (var i=0,ii=flushCallback.length; i<ii; i++) {
+        flushCallback[i]();
       }
       
       runState = "stop";
