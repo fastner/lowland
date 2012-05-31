@@ -7,11 +7,16 @@
 
 (function() {
   var eventStore = {};
+  var forceDirectEvent = {};
   
   /**
    * Generic queue manager supporting simple dependency dissolving.
    */
   core.Module("lowland.events.EventManager", {
+    forceDirect : function(target, event) {
+      forceDirectEvent[target.getHash()+"-"+event] = 1;
+    },
+    
     addListener : function(target, event, callback, context) {
       if (core.Env.getValue("debug")) {
         if (!target) {
@@ -154,7 +159,12 @@
         evtCls = new etf();
       }
 
-      var targetStore = eventStore[target.getHash()];
+      var targetHash = target.getHash();
+      if (forceDirectEvent[targetHash+"-"+event] == 1) {
+        direct = true;
+      }
+
+      var targetStore = eventStore[targetHash];
       if (targetStore) {
         targetStore = targetStore[event];
         
