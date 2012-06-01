@@ -2,6 +2,7 @@
 (function(global) {
   
   var XHR = global.XMLHttpRequest;
+  var XDR = global.XDomainRequest;
   
   var READYSTATE_UNSENT = 0;
   var READYSTATE_OPENED = 1;
@@ -43,6 +44,11 @@
       
       async : {
         init: true
+      },
+      
+      domainRequest : {
+        type: "Boolean",
+        init: false
       }
     },
     
@@ -94,18 +100,39 @@
       },
       
       send : function() {
-        var request = this.__request = XHR ? new XHR() : new ActiveXObject("Microsoft.XMLHTTP");
+        var domainRequest = this.getDomainRequest();
+        var request;
+        var xdr = false;
         
-        request.onreadystatechange = this._onReadyStateChange.bind(this);
-        request.open(this.getMethod(), this.getUrl(), true);
-        
-        var requestHeaders = this.__requestHeaders;
-        for (var key in requestHeaders) {
-          var value = requestHeaders[key];
-          request.setRequestHeader(key, value);
+        if (this.getDomainRequest()) {
+          
+          if (XDR) {
+            request = this.__request = new XDR();
+          	request.onload = this.__onDone.bind(this);
+          	xdr = true;
+          } else if (XHR) {
+          	request = this.__request = new XHR();
+          	request.onreadystatechange = this._onReadyStateChange.bind(this);
+          } else {
+            request = this.__request = new ActiveXObject("Microsoft.XMLHTTP");
+            request.onreadystatechange = this._onReadyStateChange.bind(this);
+          }
+          
+        } else {
+          request = this.__request = XHR ? new XHR() : new ActiveXObject("Microsoft.XMLHTTP");
+          request.onreadystatechange = this._onReadyStateChange.bind(this);
         }
-        if (!requestHeaders["Content-Type"]) {
-          request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        request.open(this.getMethod(), this.getUrl(), true);
+            
+        if (!xdr) {
+          var requestHeaders = this.__requestHeaders;
+          for (var key in requestHeaders) {
+            var value = requestHeaders[key];
+            request.setRequestHeader(key, value);
+          }
+          if (!requestHeaders["Content-Type"]) {
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+          }
         }
         
         if (this.__data) {
