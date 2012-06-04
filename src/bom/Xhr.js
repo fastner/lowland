@@ -183,15 +183,19 @@
         return this.__readyState;
       },
       
+      __onDone : function() {
+        var timeoutHandle = this.__timeoutHandle;
+        if (timeoutHandle) {
+          global.clearTimeout(this.__timeoutHandle);
+        }
+        this.fireEvent("done", "done");
+      },
+      
       _onReadyStateChange : function() {
         var readyState = this.__readyState = this.__request.readyState;
         
         if (readyState == READYSTATE_DONE && !this.__aborted) {
-          var timeoutHandle = this.__timeoutHandle;
-          if (timeoutHandle) {
-            global.clearTimeout(this.__timeoutHandle);
-          }
-          this.fireEvent("done", "done");
+          this.__onDone();
         }
       },
       
