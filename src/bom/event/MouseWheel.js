@@ -16,7 +16,7 @@
   };
   
   var startListen = function() {
-    if (core.detect.Engine.VALUE === 'gecko') {
+    if (core.Env.getValue("engine") == "gecko") {
       lowland.bom.Events.set(target, "DOMMouseScroll", synthesizer, false);
     } else {
       lowland.bom.Events.set(target, "mousewheel", synthesizer, false);
