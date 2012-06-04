@@ -4,10 +4,10 @@
   
   var synthesizer = function(e) {
     var delta;
-    
+
     if (e.wheelDelta) {
       delta = e.wheelDelta / 120;
-    } else if (orgEvent.detail) {
+    } else if (e.detail) {
       delta = -e.detail / 3;
     }
     
@@ -16,7 +16,11 @@
   };
   
   var startListen = function() {
-    lowland.bom.Events.set(target, "mousewheel", synthesizer, false);
+    if (core.detect.Engine.VALUE === 'gecko') {
+      lowland.bom.Events.set(target, "DOMMouseScroll", synthesizer, false);
+    } else {
+      lowland.bom.Events.set(target, "mousewheel", synthesizer, false);
+    }
   };
   
   core.Module("lowland.bom.event.MouseWheel", {
