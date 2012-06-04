@@ -16,6 +16,12 @@
 (function(global, core) {
   "use strict";
   
+  var SUPPORT_TAGNAMES = {
+    'select':'input','change':'input',
+    'submit':'form','reset':'form',
+    'error':'img','load':'img','abort':'img'
+  };
+  
   /**
    * {Boolean} Check if an event @eventName {String} is supported. Optional an @element {Element}
    * can be used to detect support on given element.
@@ -53,7 +59,9 @@
       evt = document.createEvent("HTMLEvents");
       evt.initEvent(type, true, true);
 
-      for (var key in options) evt[key] = options[key];
+      for (var key in options) {
+        evt[key] = options[key];
+      }
       return !element.dispatchEvent(evt);
     }
 
@@ -61,7 +69,9 @@
     else
     {
       evt = document.createEventObject();
-      for (var key in options) evt[key] = options[key];
+      for (var key in options) {
+        evt[key] = options[key];
+      }
       return element.fireEvent("on" + type, evt);
     }
   };
