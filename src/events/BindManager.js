@@ -23,6 +23,7 @@
   core.Module("lowland.events.BindManager", {
     bind : function(callback, context) {
       var ctxHash = lowland.ObjectManager.getHash(context);
+      var clbHash = lowland.ObjectManager.getHash(callback);
       
       var ctxBind = binds[ctxHash];
       if (!ctxBind) {
@@ -31,10 +32,10 @@
         };
       }
       
-      var cbBind = ctxBind[callback];
+      var cbBind = ctxBind[clbHash];
       if (!cbBind) {
         ctxBind.count++;
-        cbBind = ctxBind[callback] = {
+        cbBind = ctxBind[clbHash] = {
           count: 1,
           fnt: callback.bind(context)
         };
@@ -46,13 +47,14 @@
     
     unbind : function(callback, context) {
       var ctxHash = lowland.ObjectManager.getHash(context);
+      var clbHash = lowland.ObjectManager.getHash(callback);
       var ctxBind = binds[ctxHash];
       
       if (!ctxBind) {
         return false;
       }
       
-      var cbBind = ctxBind[callback];
+      var cbBind = ctxBind[clbHash];
       
       if (!cbBind) {
         return false;
@@ -60,8 +62,8 @@
       
       cbBind.count--;
       if (cbBind.count <= 0) {
-        ctxBind[callback] = null;
-        delete ctxBind[callback];
+        ctxBind[clbHash] = null;
+        delete ctxBind[clbHash];
         ctxBind.count--;
         
         if (ctxBind.count <= 0) {

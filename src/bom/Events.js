@@ -54,8 +54,7 @@
     var evt;
     
     // dispatch for standard first
-    if (document.createEvent)
-    {
+    if (core.Env.getValue("eventmodel") == "W3C") {
       evt = document.createEvent("HTMLEvents");
       evt.initEvent(type, true, true);
 
@@ -63,23 +62,24 @@
         evt[key] = options[key];
       }
       return !element.dispatchEvent(evt);
-    }
-
-    // dispatch for IE
-    else
-    {
+    } else if (core.Env.getValue("eventmodel") == "MSIE") {
+      // dispatch for IE
       evt = document.createEventObject();
       for (var key in options) {
         evt[key] = options[key];
       }
       return element.fireEvent("on" + type, evt);
+    } else {
+      if (core.Env.getValue("debug")) {
+        console.warn("No method available to dispatch event " + type + " to " + element);
+      }
     }
   };
   
   var append = function(element, type, handler, capture) {
-    if (element.addEventListener) {
+    if (core.Env.getValue("eventmodel") == "W3C") {
       element.addEventListener(type, handler, !!capture);
-    } else if (element.attachEvent) {
+    } else if (core.Env.getValue("eventmodel") == "MSIE") {
       element.attachEvent("on" + type, handler);
     } else if (typeof element["on" + type] != "undefined") {
       element["on" + type] = handler;
@@ -91,9 +91,9 @@
   };
   
   var remove = function(element, type, handler, capture) {
-    if (element.removeEventListener) {
+    if (core.Env.getValue("eventmodel") == "W3C") {
       element.removeEventListener(type, handler, !!capture);
-    } else if (element.detachEvent) {
+    } else if (core.Env.getValue("eventmodel") == "MSIE") {
       try {
         element.detachEvent("on" + type, handler);
       }
