@@ -50,8 +50,8 @@ core.Class("lowland.base.UserData", {
     },
     
     /**
-       * Destucts user data object
-       */
+     * Destucts user data object
+     */
     destruct : function() {
       this.__$$userdata = null;
     }

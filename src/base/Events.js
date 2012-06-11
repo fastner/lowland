@@ -15,12 +15,19 @@ core.Class("lowland.base.Events", {
       return this.fireSpecialEvent(type, [value, old]);
     },
     
+    /**
+     * Fire DIRECT event @type {String} on this class with special @value {var} and @old {var} parameter.
+     * This should only be used if button execution context have to be the same like in request for
+     * FullScreen mode.
+     */
     fireDirectEvent : function(type, value, old) {
       return this.fireSpecialEvent(type, [value, old], true);
     },
     
     /**
      * Fire event @type {String} on this class with @args {Array} as event parameters.
+     * If @direct {Boolean} is true an synchronous direct event is fired and executed
+     * immediately.
      */
     fireSpecialEvent : function(type, args, direct) {
       var events = core.Class.getEvents(this.constructor);
