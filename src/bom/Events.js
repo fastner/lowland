@@ -141,6 +141,31 @@
     }
   };
   
+  var stopPropagation = function(event) {
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    } else {
+      event.cancelBubble = true;
+    }
+  };
+  
+  var preventDefault = function(event) {
+    if (event.preventDefault) {
+      event.preventDefault();
+    } else {
+      try {
+        // See qooxdoo bug #1049
+        event.keyCode = 0;
+      } catch(ex) {}
+      
+      event.returnValue = false;
+    }
+  };
+  
+  var getTarget = function(event) {
+    return event.target || event.srcElement;
+  };
+  
   core.Module("lowland.bom.Events", {
     isSupported : isSupported,
     dispatch : dispatch,
@@ -148,7 +173,10 @@
     unset : remove,
     listen : hookListen,
     unlisten : hookUnlisten,
-    registerHook : registerHook
+    registerHook : registerHook,
+    stopPropagation : stopPropagation,
+    preventDefault : preventDefault,
+    getTarget : getTarget
   });
   
 })(this, core);
