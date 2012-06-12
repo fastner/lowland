@@ -22,6 +22,9 @@
     'error':'img','load':'img','abort':'img'
   };
   
+  var CAPTURING_PHASE = 1;
+  var BUBBLING_PHASE = 3;
+  
   /**
    * {Boolean} Check if an event @eventName {String} is supported. Optional an @element {Element}
    * can be used to detect support on given element.
@@ -50,6 +53,161 @@
     return isSupported;
   };
   
+  if (core.Env.getValue("eventmodel") == "MSIE") {
+    
+    var synthesize = function(element, type, capture, options) {
+      var event = {
+        type: type,
+        target: element,
+        bubbles: true,
+        cancelable: true,
+        propagated: true,
+        relatedTarget: null,
+        currentTarget: element,
+        preventDefault: preventDefault,
+        stopPropagation: stopPropagation,
+        eventPhase: capture ? CAPTURING_PHASE : BUBBLING_PHASE,
+        timeStamp: +new Date
+      };
+      for (var i in options) {
+        event[i] = options[i];
+      }
+      return event;
+    };
+    
+    var propagatePhase = function(element, type, capture) {
+      var ancestors = [];
+      var node = element;
+      var result = true;
+      var event = synthesize(element, type, capture);
+      
+      // collect ancestors
+      while (node) {
+        ancestors.push(node);
+        node = node.parentNode;
+      }
+      
+      // capturing, reverse ancestors collection
+      if (capture) {
+        ancestors.reverse();
+      }
+      
+      // execute registered handlers in fifo order
+      for (var i = 0, ii = ancestors.length; i<ii; i++) {
+        // set currentTarget to current ancestor
+        event.currentTarget = ancestors[i];
+        // set eventPhase to the requested phase
+        event.eventPhase = capture ? CAPTURING_PHASE : BUBBLING_PHASE;
+        // execute listeners bound to this ancestor and set return value
+        if (handleListener.call(ancestors[i], event) === false || event.returnValue === false) {
+          result = false;
+          break;
+        }
+      }
+      return result;
+    };
+    
+    var notify = function(element, type, capture) {
+      if (typeof capture !== 'undefined') {
+        return propagatePhase(element, type, !!capture);
+      }
+      return (propagatePhase(element, type, true) && propagatePhase(element, type, false));
+    };
+  
+    var createRegistry = function() {
+      return {
+        items : [],
+        calls : [],
+        params : []
+      };
+    };
+    
+    var registry = {};
+    
+    var handleListener = function(event) {
+      var type = event.type;
+      var valid;
+      var phase = event.eventPhase;
+      var result = true;
+      
+      if (registry[type] && registry[type].items) {
+        
+        // make a copy of the registry[type] array
+        // since it can be modified run time by the
+        // events deleting themselves or adding new
+        var items = registry[type].items.slice();
+        var calls = registry[type].calls.slice();
+        var parms = registry[type].parms.slice();
+        
+        for (var i=0,ii=items.length; i<ii; i++) {
+          valid = false;
+          
+          if (items[i] == this) {
+            if (phase == CAPTURING_PHASE) {
+              valid = parms[i] === true;
+            } else if (phase == BUBBLING_PHASE) {
+              valid = parms[i] !== true;
+            } else {
+              valid = true;
+            }
+           
+            if (valid) {
+              result = calls[i].call(this, event);
+              if (result === false) {
+                break;
+              }
+            }
+          }
+          
+        }
+        
+        if (result === false) {
+          stopPropagation(event);
+          preventDefault(event);
+        }
+      }
+      
+      return result;
+    };
+    
+    var registerEvent = function(element, type, handler, capture) {
+      if (!registry[type]) {
+        registry[type] = createRegistry();
+      }
+      
+      // append instance parameters to the registry
+      registry[type].items.push(element);
+      registry[type].calls.push(handler);
+      registry[type].parms.push(!!capture);
+    };
+    
+    var unregisterEvent = function(element, type, handler, capture) {
+      var reg = registry[type];
+      var hash = lowland.ObjectManager.getHash;
+      
+      if (!reg) {
+        return;
+      }
+      
+      var found = false;
+      
+      for (var i=0,ii=reg.items.length; i<ii; i++) {
+        if (reg.items[i] === element) {
+          if (hash(reg.calls[i]) == hash(handler)) {
+            if (reg.parms[i] == capture) {
+              found = i;
+              break;
+            }
+          }
+        }
+      }
+      
+      if (found !== false) {
+        reg.removeAt(found);
+      }
+    };
+  }
+  
   var dispatch = function(element, type, capture, options) {
     var evt;
     
@@ -64,11 +222,17 @@
       return !element.dispatchEvent(evt);
     } else if (core.Env.getValue("eventmodel") == "MSIE") {
       // dispatch for IE
-      evt = document.createEventObject();
-      for (var key in options) {
-        evt[key] = options[key];
-      }
-      return element.fireEvent("on" + type, evt);
+      
+      if (isSupported(type)) {
+        evt = document.createEventObject();
+        for (var key in options) {
+          evt[key] = options[key];
+        }
+        return element.fireEvent("on" + type, evt);
+      } 
+      
+      return notify(element, type, capture);
+      
     } else {
       if (core.Env.getValue("debug")) {
         console.warn("No method available to dispatch event " + type + " to " + element);
@@ -80,6 +244,7 @@
     if (core.Env.getValue("eventmodel") == "W3C") {
       element.addEventListener(type, handler, !!capture);
     } else if (core.Env.getValue("eventmodel") == "MSIE") {
+      registerEvent(element, type, handler, capture);
       element.attachEvent("on" + type, handler);
     } else if (typeof element["on" + type] != "undefined") {
       element["on" + type] = handler;
@@ -94,6 +259,7 @@
     if (core.Env.getValue("eventmodel") == "W3C") {
       element.removeEventListener(type, handler, !!capture);
     } else if (core.Env.getValue("eventmodel") == "MSIE") {
+      unregisterEvent(element, type, handler, capture);
       try {
         element.detachEvent("on" + type, handler);
       }
