@@ -62,7 +62,7 @@
     getTextSize : function(content, style) {
       var protectStyle = {
         width: "auto",
-        whiteSpace: "no-wrap",
+        whiteSpace: "nowrap",
         fontFamily: style.fontFamily || "",
         fontWeight: style.fontWeight || "",
         fontSize: style.fontSize || "",
