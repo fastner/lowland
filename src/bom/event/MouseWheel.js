@@ -12,7 +12,7 @@
     }
     
     lowland.bom.Events.dispatch(e.target, "hook_mousewheel", false, { wheelDelta: delta });
-    e.preventDefault();
+    lowland.bom.Events.preventDefault(e);
   };
   
   var startListen = function() {
