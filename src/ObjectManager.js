@@ -15,6 +15,10 @@
    */
   core.Module("lowland.ObjectManager", {
     getHash : function(obj) {
+      if (!obj) {
+        return;
+      }
+      
       if (obj.$$hash) {
         return obj.$$hash;
       }
