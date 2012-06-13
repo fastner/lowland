@@ -17,7 +17,7 @@
   
   var handleMessage = function(event) {
     if (event.source == window && event.data == messageName) {
-      event.stopPropagation();
+      lowland.bom.Events.stopPropagation(event);
       if (timeouts.length > 0) {
         var timeout = timeouts.shift();
 
