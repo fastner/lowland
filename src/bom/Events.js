@@ -67,7 +67,7 @@
         preventDefault: preventDefault,
         stopPropagation: stopPropagation,
         eventPhase: capture ? CAPTURING_PHASE : BUBBLING_PHASE,
-        timeStamp: +new Date
+        timeStamp: (new Date()).valueOf()
       };
       for (var i in options) {
         event[i] = options[i];
@@ -75,11 +75,11 @@
       return event;
     };
     
-    var propagatePhase = function(element, type, capture) {
+    var propagatePhase = function(element, type, capture, options) {
       var ancestors = [];
       var node = element;
       var result = true;
-      var event = synthesize(element, type, capture);
+      var event = synthesize(element, type, capture, options);
       
       // collect ancestors
       while (node) {
@@ -107,11 +107,11 @@
       return result;
     };
     
-    var notify = function(element, type, capture) {
+    var notify = function(element, type, capture, options) {
       if (typeof capture !== 'undefined') {
-        return propagatePhase(element, type, !!capture);
+        return propagatePhase(element, type, !!capture, options);
       }
-      return (propagatePhase(element, type, true) && propagatePhase(element, type, false));
+      return (propagatePhase(element, type, true, options) && propagatePhase(element, type, false, options));
     };
   
     var createRegistry = function() {
@@ -231,7 +231,7 @@
         return element.fireEvent("on" + type, evt);
       } 
       
-      return notify(element, type, capture);
+      return notify(element, type, capture, options);
       
     } else {
       if (core.Env.getValue("debug")) {
