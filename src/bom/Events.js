@@ -55,6 +55,9 @@
   
   if (core.Env.getValue("eventmodel") == "MSIE") {
     
+    var synthesizedPreventDefault = function() { this.returnValue = false;  };
+    var synthesizedStopPropagation = function() { this.cancelBubble = true; };
+    
     var synthesize = function(element, type, capture, options) {
       var event = {
         type: type,
@@ -64,8 +67,8 @@
         propagated: true,
         relatedTarget: null,
         currentTarget: element,
-        preventDefault: preventDefault,
-        stopPropagation: stopPropagation,
+        preventDefault: synthesizedPreventDefault,
+        stopPropagation: synthesizedStopPropagation,
         eventPhase: capture ? CAPTURING_PHASE : BUBBLING_PHASE,
         timeStamp: (new Date()).valueOf()
       };
