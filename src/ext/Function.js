@@ -29,6 +29,10 @@
   
   core.Main.addMembers("Function", {
     
+    /**
+     * Delays function for @time {Integer} milliseconds and after that time executes function
+     * in @context {var}.
+     */
     delay : function(time, context) {
       var func = this;
       return setTimeout(function(context, args) {
@@ -38,6 +42,7 @@
     
     /**
      * Based upon work of http://dbaron.org/log/20100309-faster-timeouts
+     * Calls function lazy in @context {var}.
      */
     lazy : function(context) {
       context = context || this;
