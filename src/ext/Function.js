@@ -33,10 +33,10 @@
      * Delays function for @time {Integer} milliseconds and after that time executes function
      * in @context {var}.
      */
-    delay : function(time, context) {
+    lowDelay : function(time, context) {
       var func = this;
       return setTimeout(function(context, args) {
-        func.apply(context, args);
+        func.apply(context||this, args||[]);
       }, time, context, slice.call(arguments, 2));
     },
     
