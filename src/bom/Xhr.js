@@ -142,7 +142,7 @@
         }
         
         this.__aborted = false;
-        var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.delay(this.getTimeout(), this);
+        var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.lowDelay(this.getTimeout(), this);
         
         // Fixes for IE memory leaks, from core.io.Text
         if (core.Env.isSet("engine", "trident") && global.attachEvent) {
