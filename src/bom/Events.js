@@ -213,13 +213,18 @@
   
   var dispatch = function(element, type, capture, options) {
     var evt;
+    var keys;
+    var key;
+    var i,ii;
     
     // dispatch for standard first
     if (core.Env.getValue("eventmodel") == "W3C") {
       evt = document.createEvent("HTMLEvents");
       evt.initEvent(type, true, true);
 
-      for (var key in options) {
+      keys = Object.keys(options);
+      for (i=0,ii=keys.length; i<ii; i++) {
+        key = keys[i];
         evt[key] = options[key];
       }
       return !element.dispatchEvent(evt);
@@ -228,7 +233,9 @@
       
       if (isSupported(type)) {
         evt = document.createEventObject();
-        for (var key in options) {
+        keys = Object.keys(options);
+        for (i=0,ii=keys.length; i<ii; i++) {
+          key = keys[i];
           evt[key] = options[key];
         }
         return element.fireEvent("on" + type, evt);

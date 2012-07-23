@@ -1,4 +1,4 @@
-(function(global, lowland, core) {
+(function(global) {
   var bound = false;
   var doc = global.document;
   var body = doc.body;
@@ -37,4 +37,4 @@
   lowland.bom.Events.registerHook("mousemove", lowland.bom.event.MouseEvents);
   lowland.bom.Events.registerHook("mousedown", lowland.bom.event.MouseEvents);
   lowland.bom.Events.registerHook("mouseup", lowland.bom.event.MouseEvents);
-})(this, lowland, core);
+})(this);
