@@ -3,6 +3,18 @@
   var doc = global.document;
   var body = doc.body;
   
+  var filterMouseMove = function(e) {
+    return {
+      screenX: e.screenX,
+      screenY: e.screenY,
+      clientX: e.clientX,
+      clientY: e.clientY,
+      button: e.button,
+      relatedTarget: e.relatedTarget,
+      target: lowland.bom.Events.getTarget(e)
+    };
+  };
+  
   var synthesizer = function(e) {
     var eventDoc = e.target.ownerDocument || document;
     var doc = eventDoc.documentElement;
@@ -13,7 +25,7 @@
       e.pageY = e.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc && doc.clientTop || body && body.clientTop || 0);
     }
     
-    lowland.bom.Events.dispatch(e.target, "hook_mousemove", false, e);
+    lowland.bom.Events.dispatch(e.target, "hook_mousemove", false, filterMouseMove(e));
     lowland.bom.Events.preventDefault(e);
   };
   
