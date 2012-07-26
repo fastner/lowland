@@ -10,8 +10,7 @@
       clientX: e.clientX,
       clientY: e.clientY,
       button: e.button,
-      relatedTarget: e.relatedTarget,
-      target: lowland.bom.Events.getTarget(e)
+      relatedTarget: e.relatedTarget
     };
   };
   
