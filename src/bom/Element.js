@@ -158,7 +158,17 @@
   }
 
 
-  var getProperty = core.bom.Style.property;
+  var propertyHelper = {};
+  var getProperty = function(property) {
+    if (propertyHelper[property]) {
+      return propertyHelper[property];
+    }
+    
+    var prop = core.bom.Style.property(property).replace(/([A-Z])/g, '-$1').toLowerCase();
+    propertyHelper[property] = prop;
+    
+    return prop;
+  };
   
   core.Module("lowland.bom.Element", {
     
