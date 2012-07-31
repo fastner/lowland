@@ -158,8 +158,22 @@
   }
 
 
+  var getProperty = core.bom.Style.property;
   
   core.Module("lowland.bom.Element", {
+    
+    replaceStyle : function(element, styleMap) {
+      var cssText = [];
+      
+      for (var key in styleMap) {
+        cssText.push(getProperty(key));
+        cssText.push(":");
+        cssText.push(styleMap[key]);
+        cssText.push(";");
+      }
+      
+      element.style.cssText = cssText.join("");
+    },
     
     getContentWidth : function(element) {
       if ((core.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
