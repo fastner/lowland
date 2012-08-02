@@ -15,7 +15,13 @@
   };
   
   var synthesizer = function(e) {
-    var eventDoc = e.target.ownerDocument || document;
+    // See http://www.quirksmode.org/js/events_properties.html#target
+    e = e || window.event;
+    var target = e.target ? e.target : e.srcElement;
+    if (target.nodeType == 3) {
+      target = target.parentNode; // Fix for Safari bug
+    }
+    var eventDoc = target.ownerDocument || document;
     var doc = eventDoc.documentElement;
     var body = eventDoc.body;
     
