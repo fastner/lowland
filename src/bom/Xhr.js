@@ -49,6 +49,12 @@
       domainRequest : {
         type: "Boolean",
         init: false
+      },
+      
+      overwrittenResponseType : {
+        type: "String",
+        init: null,
+        nullable: true
       }
     },
     
@@ -125,6 +131,11 @@
         request.open(this.getMethod(), this.getUrl(), true);
             
         if (!xdr) {
+          var respType = this.getOverwrittenResponseType();
+          if (respType && respType !== "") {
+            request.responseType = respType;
+          }
+          
           var requestHeaders = this.__requestHeaders;
           for (var key in requestHeaders) {
             var value = requestHeaders[key];
