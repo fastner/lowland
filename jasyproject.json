@@ -8,5 +8,10 @@
 			"check" : ["W3C", "MSIE", "UNKNOWN"],
 			"detect" : "lowland.detect.EventModel"
 		}
-	}
+	},
+  
+  "requires" : [{
+    "source" : "https://github.com/fastner/core.git",
+    "version" : "m/0.7"
+  }]
 }

@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.bom.Font", {
+core.Module("lowtest.bom.Font", {
   test : function() {
     
     module("lowland.bom.Font");

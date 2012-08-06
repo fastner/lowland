@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.util.Base64", {
+core.Module("lowtest.util.Base64", {
   test : function() {
     
     module("lowland.util.Base64");

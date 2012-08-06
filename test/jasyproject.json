@@ -1,0 +1,6 @@
+{
+  "name" : "lowtest",
+  "package" : "",
+  
+  "requires" : [".."]
+}

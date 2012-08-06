@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.Object", {
+core.Module("lowtest.Object", {
   test : function() {
     
     module("lowland.Object");

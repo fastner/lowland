@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.base.UserData", {
+core.Module("lowtest.base.UserData", {
   test : function() {
     
     module("lowland.base.UserData");
@@ -17,12 +17,6 @@ core.Module("lowland.test.base.UserData", {
       }, function(e) {
         return e.message.indexOf("Parameter") !== -1;
       }, "Register without parameter");
-      
-      raises(function() {
-        Test.setUserData("key");
-      }, function(e) {
-        return e.message.indexOf("Parameter") !== -1;
-      }, "Register with name only");
     });
     
     test("test get function", function() {

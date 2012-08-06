@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.ObjectManager", {
+core.Module("lowtest.ObjectManager", {
   test : function() {
     
     module("lowland.ObjectRegistry");

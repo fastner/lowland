@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.events.EventManager", {
+core.Module("lowtest.events.EventManager", {
   test : function() {
     
     module("lowland.events.EventManager");

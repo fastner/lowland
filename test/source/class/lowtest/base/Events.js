@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.base.Events", {
+core.Module("lowtest.base.Events", {
   test : function() {
     
     module("lowland.base.UserData");

@@ -2,6 +2,12 @@
 (function() {
   
   var XHRSpy = function(xhr, result) {
+    var old = {
+      send: xhr.prototype.send,
+      open: xhr.prototype.open,
+      setRequestHeader: xhr.prototype.setRequestHeader
+    };
+    
     xhr.prototype.send = function(data) {
       result.send = arguments;
       
@@ -19,9 +25,12 @@
         password: password
       };
     };
+    xhr.prototype.setRequestHeader = function() {};
+    
+    return old;
   };
 
-  core.Module("lowland.test.bom.Xhr", {
+  core.Module("lowtest.bom.Xhr", {
     test : function() {
       
       module("lowland.bom.Xhr");
@@ -115,15 +124,23 @@
       });
       
       test("send", function() {
+        var origReq = XMLHttpRequest;
+        XMLHttpRequest = function() {
+          origReq.apply(this, arguments);
+        };
+        XMLHttpRequest.prototype = origReq.prototype;
+        XMLHttpRequest.prototype.send = function() {
+          called = true;
+        };
+        XMLHttpRequest.prototype.setRequestHeader = function() {
+        };
+        window.bbb = XMLHttpRequest;
+        
         var x = new lowland.bom.Xhr();
         
         x.setUrl("http://www.example.com");
         
-        
         var called = false;
-        XMLHttpRequest.prototype.send = function() {
-          called = true;
-        };
         
         x.send();
         equals(true, called);
@@ -131,7 +148,7 @@
       
       test("get cycle", function() {
         var result = {};
-        XHRSpy(XMLHttpRequest, result);
+        var old = XHRSpy(XMLHttpRequest, result);
         
         var x = new lowland.bom.Xhr();
         x.setUrl("http://www.example.com");
@@ -142,6 +159,10 @@
         equal("http://www.example.com", result.open.url);
         equal(true, result.open.async);
         equal(null, result.open.user);
+        
+        for (var key in old) {
+          XMLHttpRequest.prototype[key] = old[key];
+        }
       });
       /*
       asyncTest("done event", function() {

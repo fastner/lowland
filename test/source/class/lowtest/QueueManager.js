@@ -1,5 +1,5 @@
 
-core.Module("lowland.test.QueueManager", {
+core.Module("lowtest.QueueManager", {
   test : function() {
     
     module("lowland.QueueManager");
