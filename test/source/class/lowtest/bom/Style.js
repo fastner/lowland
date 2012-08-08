@@ -9,7 +9,7 @@ core.Module("lowtest.bom.Style", {
 			var oldAppendChild = document.head.appendChild;
 			document.head.appendChild = function(element) {
 				document.head.appendChild = oldAppendChild;
-				ok(true,  "add css text");
+				ok(element.innerHTML.indexOf(css) >= 0,  "add css text");
 			}
 			
 			lowland.bom.Style.addStyleText(css);
