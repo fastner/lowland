@@ -23,5 +23,6 @@ $(function() {
   lowtest.bom.Xhr.test();
   lowtest.ObjectManager.test();
   lowtest.util.Object.test();
+  lowtest.bom.Style.test();
   
 });

@@ -116,16 +116,20 @@
             request = this.__request = new XDR();
           	request.onload = this.__onDone.bind(this);
           	xdr = true;
-          } else if (XHR) {
+          } else if (core.Env.getValue("io.request") == "XHR") {
           	request = this.__request = new XHR();
           	request.onreadystatechange = this._onReadyStateChange.bind(this);
-          } else {
+          } else if (core.Env.getValue("io.request") == "ACTIVEX") {
             request = this.__request = new ActiveXObject("Microsoft.XMLHTTP");
             request.onreadystatechange = this._onReadyStateChange.bind(this);
           }
           
         } else {
-          request = this.__request = XHR ? new XHR() : new ActiveXObject("Microsoft.XMLHTTP");
+        	if (core.Env.getValue("io.request") == "XHR") {
+        		request = this.__request = new XHR();
+        	} else if (core.Env.getValue("io.request") == "ACTIVEX") {
+        		request = this.__request = new ActiveXObject("Microsoft.XMLHTTP");
+        	}
           request.onreadystatechange = this._onReadyStateChange.bind(this);
         }
         request.open(this.getMethod(), this.getUrl(), true);

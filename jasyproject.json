@@ -1,17 +1,19 @@
 {
-  "name" : "lowland",
-  
-  "fields" :
-  {
-		"eventmodel" : 
-		{
+	"name" : "lowland",
+	
+	"fields" : {
+		"eventmodel" : {
 			"check" : ["W3C", "MSIE", "UNKNOWN"],
 			"detect" : "lowland.detect.EventModel"
 		}
+		"io.request" : {
+			"check" : ["XHR", "ACTIVEX", "NONE"],
+			"detect" : "lowland.detect.IoRequest"
+		}
 	},
-  
-  "requires" : [{
-    "source" : "https://github.com/fastner/core.git",
-    "version" : "m/0.7"
-  }]
+	
+	"requires" : [{
+		"source" : "https://github.com/fastner/core.git",
+		"version" : "m/0.7"
+	}]
 }
