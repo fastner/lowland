@@ -1,3 +1,10 @@
+/*
+==================================================================================================
+	Lowland - JavaScript low level functions
+	Copyright (C) 2012 Sebatian Fastner
+==================================================================================================
+*/
+
 (function(global) {
 	var bound = false;
 	var doc = global.document;
