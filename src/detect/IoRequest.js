@@ -25,7 +25,7 @@ core.Module("lowland.detect.IoRequest", {
 			
 			try {
 				new window.ActiveXObject("Microsoft.XMLHTTP");
-            	return "ACTIVEX";
+							return "ACTIVEX";
 			} catch(e) {
 			}
 		}
