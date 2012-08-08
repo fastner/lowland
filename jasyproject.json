@@ -5,7 +5,7 @@
 		"eventmodel" : {
 			"check" : ["W3C", "MSIE", "UNKNOWN"],
 			"detect" : "lowland.detect.EventModel"
-		}
+		},
 		"io.request" : {
 			"check" : ["XHR", "ACTIVEX", "NONE"],
 			"detect" : "lowland.detect.IoRequest"
