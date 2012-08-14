@@ -16,6 +16,8 @@
 	var READYSTATE_LOADING = 3;
 	var READYSTATE_DONE = 4;
 	
+	var empty = new Function;
+	
 	core.Class("lowland.bom.Xhr", {
 		include : [ lowland.Object ],
 		
