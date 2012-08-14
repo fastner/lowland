@@ -169,7 +169,7 @@
 				if (core.Env.isSet("engine", "trident") && global.attachEvent) {
 					var onUnload = function() {
 						global.detachEvent("onunload", onUnload);
-						request.onreadystatechange = empty;
+						request.onreadystatechange = new Function;
 						clearTimeout(timeoutHandle);
 
 						// Internet Explorer will keep connections alive if we don't abort on unload
