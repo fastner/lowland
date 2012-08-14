@@ -10,7 +10,7 @@
 	var doc = global.document;
 	var body = doc.body;
 	
-	var filterMouseMove = function(e) {
+	var filterMouseEvent = function(e) {
 		return {
 			screenX: e.screenX,
 			screenY: e.screenY,
@@ -21,7 +21,7 @@
 		};
 	};
 	
-	var synthesizer = function(e) {
+	var moveSynthesizer = function(e) {
 		// See http://www.quirksmode.org/js/events_properties.html#target
 		e = e || window.event;
 		var target = e.target ? e.target : e.srcElement;
@@ -37,12 +37,33 @@
 			e.pageY = e.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc && doc.clientTop || body && body.clientTop || 0);
 		}
 		
-		lowland.bom.Events.dispatch(e.target, "hook_mousemove", false, filterMouseMove(e));
+		lowland.bom.Events.dispatch(e.target, "hook_mousemove", false, filterMouseEvent(e));
+		lowland.bom.Events.preventDefault(e);
+	};
+	
+	var wheelSynthesizer = function(e) {
+		var delta;
+
+		var eventData = filterMouseEvent(e);
+
+		if (e.wheelDelta) {
+			eventData.wheelDelta = e.wheelDelta / 120;
+		} else if (e.detail) {
+			eventData.wheelDelta = -e.detail / 3;
+		}
+		
+		lowland.bom.Events.dispatch(e.target, "hook_mousewheel", false, eventData);
 		lowland.bom.Events.preventDefault(e);
 	};
 	
 	var startListen = function() {
-		lowland.bom.Events.set(body, "mousemove", synthesizer, false);
+		lowland.bom.Events.set(body, "mousemove", moveSynthesizer, false);
+		
+		if (core.Env.getValue("engine") == "gecko") {
+			lowland.bom.Events.set(body, "DOMMouseScroll", wheelSynthesizer, false);
+		} else {
+			lowland.bom.Events.set(body, "mousewheel", wheelSynthesizer, false);
+		}
 	};
 	
 	core.Module("lowland.bom.event.MouseEvents", {
@@ -61,4 +82,5 @@
 	lowland.bom.Events.registerHook("mousemove", lowland.bom.event.MouseEvents);
 	lowland.bom.Events.registerHook("mousedown", lowland.bom.event.MouseEvents);
 	lowland.bom.Events.registerHook("mouseup", lowland.bom.event.MouseEvents);
+	lowland.bom.Events.registerHook("mousewheel", lowland.bom.event.MouseEvents);
 })(this);
