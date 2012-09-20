@@ -41,7 +41,7 @@ core.Class("lowland.base.Events", {
 		 * @callback {Function} is executed in @context {var?null}.
 		 */
 		addListener : function(event, callback, context) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				var cls = core.Class.getEvents(this.constructor)[event];
 				if (!cls || !core.Class.isClass(cls)) {
 					//throw new Error("Class " + this.constructor + " has no event " + type);
@@ -56,7 +56,7 @@ core.Class("lowland.base.Events", {
 		 * If the event is fired the @callback {Function} is executed in @context {var?null}.
 		 */
 		addListenerOnce : function(event, callback, context) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				var cls = core.Class.getEvents(this.constructor)[event];
 				if (!cls || !core.Class.isClass(cls)) {
 					//throw new Error("Class " + this.constructor + " has no event " + type);

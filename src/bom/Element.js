@@ -30,14 +30,14 @@
 		return rv;
 	}
 
-	var isIENew = core.Env.getValue("engine") == "trident" && getIEVersion() >= 8;
-	var isIEOld = core.Env.getValue("engine") == "trident" && !isIENew;
+	var isIENew = jasy.Env.getValue("engine") == "trident" && getIEVersion() >= 8;
+	var isIEOld = jasy.Env.getValue("engine") == "trident" && !isIENew;
 	
-	var isFireFoxOld =  core.Env.getValue("engine") == "gecko" && ((userAgent.match(/firefox\/2./i) != null) || (userAgent.match(/firefox\/1./i) != null));
-	var isFireFoxNew =  core.Env.getValue("engine") == "gecko" && !isFireFoxOld;
+	var isFireFoxOld =  jasy.Env.getValue("engine") == "gecko" && ((userAgent.match(/firefox\/2./i) != null) || (userAgent.match(/firefox\/1./i) != null));
+	var isFireFoxNew =  jasy.Env.getValue("engine") == "gecko" && !isFireFoxOld;
 	
 	var isChrome =  navigator.appVersion.match(/Chrome/) != null;
-	var isOperaOld =  core.Env.getValue("engine") == "presto" && (getOperaVersion() < 10);
+	var isOperaOld =  jasy.Env.getValue("engine") == "presto" && (getOperaVersion() < 10);
 
 	var parseBorderWidth = function(width) {
 		var res = 0;
@@ -137,11 +137,11 @@
 			
 			//next lines are necessary to fix the problem 
 			//with offsetParent
-			if (core.Env.getValue("engine") != "trident" && !isOperaOld || isIENew) {
+			if (jasy.Env.getValue("engine") != "trident" && !isOperaOld || isIENew) {
 				while (offsetParent != parentNode && parentNode !== null) {
 					res.left -= parentNode.scrollLeft;
 					res.top -= parentNode.scrollTop;
-					if (isFireFoxOld || core.Env.getValue("engine") == "webkit") {
+					if (isFireFoxOld || jasy.Env.getValue("engine") == "webkit") {
 						borderWidth = getBorderWidth(parentNode);
 						res.left += borderWidth.left;
 						res.top += borderWidth.top;
@@ -186,7 +186,7 @@
 		},
 		
 		getContentWidth : function(element) {
-			if ((core.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
+			if ((jasy.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
 				// see https://bugzilla.mozilla.org/show_bug.cgi?id=450422
 				var rect = element.getBoundingClientRect();
 				return Math.round(rect.right) - Math.round(rect.left);
@@ -196,7 +196,7 @@
 		},
 		
 		getContentHeight : function(element) {
-			if ((core.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
+			if ((jasy.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
 				// see https://bugzilla.mozilla.org/show_bug.cgi?id=450422
 				var rect = element.getBoundingClientRect();
 				return Math.round(rect.bottom) - Math.round(rect.top);
@@ -206,7 +206,7 @@
 		},
 		
 		getContentSize : function(element) {
-			if ((core.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
+			if ((jasy.Env.getValue("engine") == "gecko") && (element.getBoundingClientRect)) {
 				// see https://bugzilla.mozilla.org/show_bug.cgi?id=450422
 				var rect = element.getBoundingClientRect();
 				return  {

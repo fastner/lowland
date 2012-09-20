@@ -59,7 +59,7 @@
 	var startListen = function() {
 		lowland.bom.Events.set(body, "mousemove", moveSynthesizer, false);
 		
-		if (core.Env.getValue("engine") == "gecko") {
+		if (jasy.Env.getValue("engine") == "gecko") {
 			lowland.bom.Events.set(body, "DOMMouseScroll", wheelSynthesizer, false);
 		} else {
 			lowland.bom.Events.set(body, "mousewheel", wheelSynthesizer, false);

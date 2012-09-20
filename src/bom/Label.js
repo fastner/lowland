@@ -80,11 +80,11 @@
 		__measureElement : function(element) {
 			var e = lowland.bom.Element.getContentSize(element);
 			
-			if (core.Env.getValue("engine") == "gecko") {
+			if (jasy.Env.getValue("engine") == "gecko") {
 				// Gecko sometimes calculates one pixel too small
 				e.width ++;
 			}
-			if (core.Env.getValue("engine") == "trident") {
+			if (jasy.Env.getValue("engine") == "trident") {
 				// IE9 sometimes calculates one pixel too small
 				e.width ++;
 			}
@@ -101,7 +101,7 @@
 		},
 		
 		__setText : function(element, content) {
-			if (core.Env.getValue("engine") == "trident") {
+			if (jasy.Env.getValue("engine") == "trident") {
 				element.innerText = content;
 			} else {
 				element.textContent = content;

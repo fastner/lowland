@@ -37,7 +37,7 @@
 		},
 		
 		register : function(name, callback, context, dependsOn) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!name) {
 					throw new Error("Parameter name not set");
 				}
@@ -117,7 +117,7 @@
 		},
 		
 		run : function(name) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!name) {
 					throw new Error("Parameter name not set");
 				}
@@ -146,7 +146,7 @@
 							runState = "running";
 							i=-1;
 						}
-					} else if (core.Env.getValue("debug")) {
+					} else if (jasy.Env.getValue("debug")) {
 						throw new Error("No callback for name " + name + " registered");
 					}
 				}

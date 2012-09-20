@@ -12,7 +12,7 @@
 var global = this;
 $(function() {
 	
-	core.Env.define("debug", true);
+	jasy.Env.define("debug", true);
 	lowtest.QueueManager.test();
 	lowtest.events.EventManager.test();
 	lowtest.base.UserData.test();

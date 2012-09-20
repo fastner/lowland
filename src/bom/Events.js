@@ -53,7 +53,7 @@
 		return isSupported;
 	};
 	
-	if (core.Env.getValue("eventmodel") == "MSIE") {
+	if (jasy.Env.getValue("eventmodel") == "MSIE") {
 		
 		var synthesizedPreventDefault = function() { this.returnValue = false;  };
 		var synthesizedStopPropagation = function() { this.cancelBubble = true; };
@@ -218,7 +218,7 @@
 		var i,ii;
 		
 		// dispatch for standard first
-		if (core.Env.getValue("eventmodel") == "W3C") {
+		if (jasy.Env.getValue("eventmodel") == "W3C") {
 			evt = document.createEvent("HTMLEvents");
 			evt.initEvent(type, true, true);
 
@@ -228,7 +228,7 @@
 				evt[key] = options[key];
 			}
 			return !element.dispatchEvent(evt);
-		} else if (core.Env.getValue("eventmodel") == "MSIE") {
+		} else if (jasy.Env.getValue("eventmodel") == "MSIE") {
 			// dispatch for IE
 			
 			if (isSupported(type)) {
@@ -244,31 +244,31 @@
 			return notify(element, type, capture, options);
 			
 		} else {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				console.warn("No method available to dispatch event " + type + " to " + element);
 			}
 		}
 	};
 	
 	var append = function(element, type, handler, capture) {
-		if (core.Env.getValue("eventmodel") == "W3C") {
+		if (jasy.Env.getValue("eventmodel") == "W3C") {
 			element.addEventListener(type, handler, !!capture);
-		} else if (core.Env.getValue("eventmodel") == "MSIE") {
+		} else if (jasy.Env.getValue("eventmodel") == "MSIE") {
 			registerEvent(element, type, handler, capture);
 			element.attachEvent("on" + type, handler);
 		} else if (typeof element["on" + type] != "undefined") {
 			element["on" + type] = handler;
 		} else {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				console.warn("No method available to add native listener to " + element);
 			}
 		}
 	};
 	
 	var remove = function(element, type, handler, capture) {
-		if (core.Env.getValue("eventmodel") == "W3C") {
+		if (jasy.Env.getValue("eventmodel") == "W3C") {
 			element.removeEventListener(type, handler, !!capture);
-		} else if (core.Env.getValue("eventmodel") == "MSIE") {
+		} else if (jasy.Env.getValue("eventmodel") == "MSIE") {
 			unregisterEvent(element, type, handler, capture);
 			try {
 				element.detachEvent("on" + type, handler);
@@ -284,7 +284,7 @@
 		} else if (typeof element["on" + type] != "undefined") {
 			element["on" + type] = null;
 		} else {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				console.warn("No method available to remove native listener from " + element);
 			}
 		}
@@ -292,7 +292,7 @@
 	
 	var hooks = {};
 	var registerHook = function(type, handler) {
-		if (core.Env.getValue("debug") && hooks[type]) {
+		if (jasy.Env.getValue("debug") && hooks[type]) {
 			console.warn("Hook for event type " + type + " already set");
 		}
 		hooks[type] = handler;

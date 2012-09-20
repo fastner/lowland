@@ -18,7 +18,7 @@
 		},
 		
 		addListener : function(target, event, callback, context) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!target) {
 					throw new Error("Parameter target not set");
 				}
@@ -44,7 +44,7 @@
 		},
 		
 		hasListener : function(target, event, callback, context) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!target) {
 					throw new Error("Parameter target not set");
 				}
@@ -80,7 +80,7 @@
 		},
 		
 		removeListener : function(target, event, callback, context) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!target) {
 					throw new Error("Parameter target not set");
 				}
@@ -125,7 +125,7 @@
 		},
 		
 		removeAllListener : function(target) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!target) {
 					throw new Error("Parameter target not set");
 				}
@@ -138,7 +138,7 @@
 		 * #require(lowland.ext.Function)
 		 */
 		fireEvent : function(target, event, eventClass, eventParameter, direct) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!target) {
 					throw new Error("Parameter target not set");
 				}

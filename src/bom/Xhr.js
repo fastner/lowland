@@ -124,18 +124,18 @@
 						request = this.__request = new XDR();
 						request.onload = this.__onDone.bind(this);
 						xdr = true;
-					} else if (core.Env.getValue("io.request") == "XHR") {
+					} else if (jasy.Env.getValue("io.request") == "XHR") {
 						request = this.__request = new XHR();
 						request.onreadystatechange = this._onReadyStateChange.bind(this);
-					} else if (core.Env.getValue("io.request") == "ACTIVEX") {
+					} else if (jasy.Env.getValue("io.request") == "ACTIVEX") {
 						request = this.__request = new ActiveXObject("Microsoft.XMLHTTP");
 						request.onreadystatechange = this._onReadyStateChange.bind(this);
 					}
 					
 				} else {
-					if (core.Env.getValue("io.request") == "XHR") {
+					if (jasy.Env.getValue("io.request") == "XHR") {
 						request = this.__request = new XHR();
-					} else if (core.Env.getValue("io.request") == "ACTIVEX") {
+					} else if (jasy.Env.getValue("io.request") == "ACTIVEX") {
 						request = this.__request = new ActiveXObject("Microsoft.XMLHTTP");
 					}
 					request.onreadystatechange = this._onReadyStateChange.bind(this);
@@ -168,7 +168,7 @@
 				var timeoutHandle = this.__timeoutHandle = this.__timeoutHandler.lowDelay(this.getTimeout(), this);
 				
 				// Fixes for IE memory leaks, from core.io.Text
-				if (core.Env.isSet("engine", "trident") && global.attachEvent) {
+				if (jasy.Env.isSet("engine", "trident") && global.attachEvent) {
 					var onUnload = function() {
 						global.detachEvent("onunload", onUnload);
 						request.onreadystatechange = empty;

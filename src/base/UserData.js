@@ -11,7 +11,7 @@ core.Class("lowland.base.UserData", {
 		 * Set user data @value {var} on object identified by @key {String}
 		 */
 		setUserData : function(key, value) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!key) {
 					throw new Error("Parameter key not set");
 				}
@@ -27,7 +27,7 @@ core.Class("lowland.base.UserData", {
 		 * {var} Returns user data identified by @key {String}
 		 */
 		getUserData : function(key) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!key) {
 					throw new Error("Parameter key not set");
 				}
@@ -40,7 +40,7 @@ core.Class("lowland.base.UserData", {
 		 * Remove user data identified by @key {String}
 		 */
 		removeUserData : function(key) {
-			if (core.Env.getValue("debug")) {
+			if (jasy.Env.getValue("debug")) {
 				if (!key) {
 					throw new Error("Parameter key not set");
 				}
