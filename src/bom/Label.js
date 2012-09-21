@@ -16,7 +16,7 @@
 		
 		var doc = global.document;
 		measureElem = doc.createElement("div");
-		core.bom.Style.set(measureElem, {
+		lowland.bom.Style.set(measureElem, {
 			height: "auto",
 			width: "auto",
 			left: "-10000px",
@@ -53,7 +53,7 @@
 				lineHeight: style.lineHeight || ""
 			};
 			var measureElement = getMeasureElement();
-			core.bom.Style.set(measureElement, protectStyle);
+			lowland.bom.Style.set(measureElement, protectStyle);
 			measureElement.innerHTML = content;
 			
 			return this.__measureElement(measureElement);
@@ -70,7 +70,7 @@
 				lineHeight: style.lineHeight || ""
 			};
 			var measureElement = getMeasureElement();
-			core.bom.Style.set(measureElement, protectStyle);
+			lowland.bom.Style.set(measureElement, protectStyle);
 			this.__setText(measureElement, content);
 			
 			return this.__measureElement(measureElement);

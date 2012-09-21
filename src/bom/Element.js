@@ -164,7 +164,7 @@
 			return propertyHelper[property];
 		}
 		
-		var prop = core.bom.Style.property(property).replace(/([A-Z])/g, '-$1').toLowerCase();
+		var prop = lowland.bom.Style.property(property).replace(/([A-Z])/g, '-$1').toLowerCase();
 		propertyHelper[property] = prop;
 		
 		return prop;
