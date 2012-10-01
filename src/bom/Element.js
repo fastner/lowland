@@ -76,10 +76,12 @@
 		return res;
 	}
 
-	var viewportElement = document.documentElement;
-
-	var getLocation = viewportElement.getBoundingClientRect ? function(element) {
+	var getLocation = document.documentElement.getBoundingClientRect ? function(element, viewportElement) {
 		
+        if (!viewportElement) {
+            viewportElement = document.documentElement;
+        }
+        
 		var res = {
 			left: 0,
 			top: 0
@@ -98,7 +100,7 @@
 		
 		return res;
 		
-	} : function(element) {
+	} : function(element, viewportElement) {
 		var res = {
 			left: 0,
 			top: 0
