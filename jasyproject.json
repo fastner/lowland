@@ -12,8 +12,5 @@
 		}
 	},
 	
-	"requires" : [{
-		"source" : "https://github.com/zynga/core.git",
-		"version" : "0.8"
-	}]
+	"requires" : ["https://github.com/sebastian-software/core.git"]
 }
