@@ -12,5 +12,8 @@
 		}
 	},
 	
-	"requires" : ["https://github.com/sebastian-software/core.git"]
+	"requires" : [{
+		"source":"https://github.com/sebastian-software/core.git",
+		"version":"0.8.1"
+	}]
 }
