@@ -79,15 +79,8 @@
 		
 		__measureElement : function(element) {
 			var e = lowland.bom.Element.getContentSize(element);
-			
-			if (jasy.Env.getValue("engine") == "gecko") {
-				// Gecko sometimes calculates one pixel too small
-				e.width ++;
-			}
-			if (jasy.Env.getValue("engine") == "trident") {
-				// IE9 sometimes calculates one pixel too small
-				e.width ++;
-			}
+			// Zooming to 0.9 leads to wrong calculation in chrome, combined with wrong calculation in gecko and trident, this fix is applied
+			e.width++;
 			
 			return e;
 		},
