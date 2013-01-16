@@ -24,13 +24,13 @@
 	core.Module("lowland.QueueManager", {
 		scheduleFlush : function() {
 			if (!timer) {
-				timer = window.setTimeout(this.__flush.bind(this), 0);
+				timer = lowland.ext.Function.lazy(this, this.__flush);
 			}
 		},
 		
 		flush : function() {
 			if (timer) {
-				window.clearTimeout(timer);
+				lowland.ext.Function.cancelLazy(timer);
 			}
 			
 			this.__flush();
