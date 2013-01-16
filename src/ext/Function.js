@@ -33,22 +33,21 @@
 		 * Delays function for @time {Integer} milliseconds and after that time executes function
 		 * in @context {var}.
 		 */
-		delay : function(time, context) {
-			var func = this;
-			return setTimeout(function(context, args) {
+		delay : function(time, context, func) {
+			return setTimeout(function(context, func, args) {
 				func.apply(context||this, args||[]);
-			}, time, context, slice.call(arguments, 2));
+			}, time, context, func, slice.call(arguments, 3));
 		},
 		
 		/**
 		 * {Number} Based upon work of http://dbaron.org/log/20100309-faster-timeouts
 		 * Calls function lazy in @context {var}.
 		 */
-		lazy : function(context) {
+		lazy : function(context, fnt) {
 			context = context || this;
 			//timeouts.push([func, slice.call(arguments,1)]);
 			var lazyId = id++;
-			timeouts.push([this, context, slice.call(arguments,1), lazyId]);
+			timeouts.push([fnt, context, slice.call(arguments,2), lazyId]);
 			postMessage(messageName, "*");
 			return lazyId;
 		},
@@ -68,8 +67,19 @@
 	});
 	
 	core.Main.addMembers("Function", {
-		lowDelay : lowland.ext.Function.delay,
-		lazy : lowland.ext.Function.lazy
+		lowDelay : function(time, context) {
+			var func = this;
+			return setTimeout(function(context, args) {
+				func.apply(context||this, args||[]);
+			}, time, context, slice.call(arguments, 2));
+		},
+		lazy : function(context) {
+			context = context || this;
+			var lazyId = id++;
+			timeouts.push([this, context, slice.call(arguments,1), lazyId]);
+			postMessage(messageName, "*");
+			return lazyId;
+		}
 	});
 
 })(window);
