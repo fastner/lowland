@@ -6,24 +6,9 @@
 */
 
 core.Class("lowland.events.Event", {
-	construct : function(target) {
-		this.__target = target;
-	},
-	
-	members : {
-		__target : null,
-		__nativeEvent : null,
-		
-		getTarget : function() {
-			return this.__target;
-		},
-		
-		setNativeEvent : function(native) {
-			this.__nativeEvent = native;
-		},
-		
-		getNativeEvent : function() {
-			return this.__nativeEvent;
-		}
+	include : [core.event.Simple],
+
+	construct : function() {
+		core.event.Simple.apply(this, arguments);
 	}
 });
