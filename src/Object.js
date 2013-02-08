@@ -15,11 +15,12 @@
 	 * General base object supporting events, userdefined data, debug output and a hash system.
 	 */
 	core.Class("lowland.Object", {
-		include : [core.property.MGeneric, lowland.base.UserData, lowland.base.Events],
+		include : [core.property.MGeneric, lowland.base.UserData, lowland.base.NativeEvents, core.event.MEventTarget],
 		
 		construct : function() {
 			lowland.base.UserData.call(this);
-			lowland.base.Events.call(this);
+			lowland.base.NativeEvents.call(this);
+			core.event.MEventTarget.call(this);
 		},
 		
 		members : {
