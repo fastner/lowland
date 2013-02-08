@@ -8,19 +8,7 @@
 core.Class("lowland.events.DataEvent", {
 	include : [lowland.events.Event],
 	
-	properties : {
-		data : { nullable: true },
-		oldData : { nullable: true }
-	},
-	
-	construct : function(target, value, oldValue) {
-		lowland.events.Event.call(this, target);
-		
-		if (value !== undefined) {
-			this.setData(value);
-		}
-		if (oldValue !== undefined) {
-			this.setOldData(oldValue);
-		}
+	construct : function() {
+		lowland.events.Event.apply(this, arguments);
 	}
 });
