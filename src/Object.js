@@ -7,7 +7,6 @@
 
 /**
  * #require(ext.sugar.Object)
- * #require(ext.sugar.Function)
  */
 (function(global) {
 	/**
