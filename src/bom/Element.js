@@ -76,7 +76,7 @@
 		return res;
 	}
 
-	var getLocation = document.documentElement.getBoundingClientRect ? function(element, viewportElement) {
+	var getLocation = (!jasy.Env.isSet("engine","trident")) && document.documentElement.getBoundingClientRect ? function(element, viewportElement) {
 		
         if (!viewportElement) {
             viewportElement = document.documentElement;
