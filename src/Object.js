@@ -24,8 +24,8 @@
 		members : {
 			debugEvents : jasy.Env.isSet("debug") ? function() {
 				return {
-					capture: this.__capturePhaseHandlers,
-					bubble: this.__bubblePhaseHandlers
+					capture: this["__capturePhaseHandlers"],
+					bubble: this["__bubblePhaseHandlers"]
 				};
 			} : function() { console.error("Event debugger only available in debug mode"); },
 
