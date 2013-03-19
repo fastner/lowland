@@ -30,7 +30,9 @@ core.Class("lowland.base.NativeEvents", {
 			
 			var boundCallback = lowland.events.BindManager.bind(callback, context);
 			lowland.bom.Events.unlisten(element, event, boundCallback, capture);
-		}
+		},
+
+		debugNativeListener : jasy.Env.isSet("debug") ? lowland.bom.Events.debugEvents : undefined
 	}
 });
 

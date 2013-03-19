@@ -250,7 +250,47 @@
 		}
 	};
 	
+	var eventDebugger = [];
+	var appendDebugger = function(element, type, handler, capture) {
+		eventDebugger.push({
+			element: element,
+			type: type,
+			handler: handler,
+			capture: capture
+		});
+	};
+	var removeDebugger = function(element, type, handler, capture) {
+		for (var i=eventDebugger.length-1; i >= 0; i--) {
+			var e = eventDebugger[i];
+			if ((e.element === element) && (e.type === type) && (e.handler === handler) && (e.capture === capture)) {
+				eventDebugger.splice(i, 1);
+			}
+		}
+	};
+	var debugEvents = function(element, type, handler, capture) {
+		var chk = function(e) {
+			var allow = true;
+			if (element) {
+				allow = allow && (e.element === element);
+			}
+			if (type) {
+				allow = allow && (e.type === type);
+			}
+			if (handler) {
+				allow = allow && (e.handler === handler);
+			}
+			if (capture) {
+				allow = allow && (e.capture === capture);
+			}
+			return allow;
+		};
+		return eventDebugger.filter(chk);
+	};
+
 	var append = function(element, type, handler, capture) {
+		if (jasy.Env.getValue("debug")) {
+			appendDebugger(element, type, handler, capture);
+		}
 		if (jasy.Env.getValue("eventmodel") == "W3C") {
 			element.addEventListener(type, handler, !!capture);
 		} else if (jasy.Env.getValue("eventmodel") == "MSIE") {
@@ -266,6 +306,9 @@
 	};
 	
 	var remove = function(element, type, handler, capture) {
+		if (jasy.Env.getValue("debug")) {
+			removeDebugger(element, type, handler, capture);
+		}
 		if (jasy.Env.getValue("eventmodel") == "W3C") {
 			element.removeEventListener(type, handler, !!capture);
 		} else if (jasy.Env.getValue("eventmodel") == "MSIE") {
@@ -352,7 +395,8 @@
 		registerHook : registerHook,
 		stopPropagation : stopPropagation,
 		preventDefault : preventDefault,
-		getTarget : getTarget
+		getTarget : getTarget,
+		debugEvents : jasy.Env.isSet("debug") ? debugEvents : undefined
 	});
 	
 })(this, core);

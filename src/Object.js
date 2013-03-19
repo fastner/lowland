@@ -22,6 +22,13 @@
 		},
 		
 		members : {
+			debugEvents : jasy.Env.isSet("debug") ? function() {
+				return {
+					capture: this.__capturePhaseHandlers,
+					bubble: this.__bubblePhaseHandlers
+				};
+			} : function() { console.error("Event debugger only available in debug mode"); },
+
 			/**
 			 * Write debug messages to console.
 			 */
