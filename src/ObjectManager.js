@@ -33,7 +33,6 @@
 		unregister : function(obj) {
 			var hash = this.getHash(obj);
 			objectRegistry[hash] = null;
-			delete objectRegistry[hash];
 		},
 		
 		find : function(hash) {
@@ -53,16 +52,19 @@
 					try {
 						val.dispose();
 						disposeCounter++;
+						
+						if (!val.isCoreDestructed()) {
+							console.error("Wrong destruction hierarchy of ", val, val.toString());
+						}
 					} catch (e) {
 						console.error(this, "Could not dispose object " + val, e);
 					}
 				}
 				
 				objectRegistry[key] = null;
-				delete objectRegistry[key];
 			}
 			
-			console.log("Disposed " + disposeCounter + " of " + length + " Objects");
+			console.log("Disposed " + disposeCounter + " Objects");
 		}
 	});
 	

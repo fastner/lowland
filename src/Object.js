@@ -57,11 +57,18 @@
 				return lowland.ObjectManager.getHash(this);
 			},
 			
+			__coreDestructed : false,
+			isCoreDestructed : function() {
+				return this.__coreDestructed;
+			},
 			/**
 			 * Destucts object
 			 */
 			destruct : function() {
+				this.__coreDestructed = true;
 				lowland.base.UserData.prototype.destruct.call(this);
+				lowland.base.NativeEvents.prototype.destruct.call(this);
+				this.removeAllListeners();
 			},
 			
 			/**
