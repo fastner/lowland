@@ -51,15 +51,17 @@
 			var ctxBind = binds[ctxHash];
 			
 			if (!ctxBind) {
-				return false;
+				return callback;
 			}
 			
 			var cbBind = ctxBind[clbHash];
 			
 			if (!cbBind) {
-				return false;
+				return callback;
 			}
-			
+
+			var boundCallback = cbBind.fnt;
+
 			cbBind.count--;
 			if (cbBind.count <= 0) {
 				ctxBind[clbHash] = null;
@@ -71,6 +73,8 @@
 					delete binds[ctxHash];
 				}
 			}
+
+			return boundCallback;
 		}
 	});
 })(window.core, window.lowland);

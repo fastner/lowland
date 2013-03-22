@@ -47,7 +47,7 @@
 					context = this;
 				}
 				
-				var boundCallback = lowland.events.BindManager.bind(callback, context);
+				var boundCallback = lowland.events.BindManager.unbind(callback, context);
 				lowland.bom.Events.unlisten(element, event, boundCallback, capture);
 			},
 	
