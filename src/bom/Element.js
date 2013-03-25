@@ -76,7 +76,7 @@
 		return res;
 	}
 
-	var getLocation = (!jasy.Env.isSet("engine","trident")) && document.documentElement.getBoundingClientRect ? function(element, viewportElement) {
+	var getLocation = document.documentElement.getBoundingClientRect ? function(element, viewportElement) {
 		
         if (!viewportElement) {
             viewportElement = document.documentElement;
@@ -88,6 +88,10 @@
 		};
 		
 		if (!element) {
+			return res;
+		}
+		
+		if (!element.parentNode) {
 			return res;
 		}
 		
@@ -110,13 +114,17 @@
 			return res;
 		}
 		
-		var offsetParent;
+		if (!element.parentNode) {
+			return res;
+		}
 		
 		res.left = element.offsetLeft;
 		res.top = element.offsetTop;
 		
 		var parentNode = element.parentNode;
+		var offsetParent = element.offsetParent;
 		var borderWidth = null;
+		
 		
 		while (offsetParent != null) {
 			res.left += offsetParent.offsetLeft;
