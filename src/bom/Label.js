@@ -94,6 +94,11 @@
 		},
 		
 		__setText : function(element, content) {
+      content = content || "";  // content could be, for example, null or undefined.
+                                // This will cause some browsers to output null or
+                                // undefined, which we do not want. So we use an
+                                // empty string instead.
+      
 			if (jasy.Env.getValue("engine") == "trident") {
 				element.innerText = content;
 			} else {
