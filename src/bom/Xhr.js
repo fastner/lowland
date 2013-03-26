@@ -8,7 +8,10 @@
 (function(global) {
 	
 	var XHR = global.XMLHttpRequest;
-	var XDR = global.XDomainRequest;
+	var XDR = null;
+	if (!("withCredentials" in global.XMLHttpRequest)) {
+		XDR = global.XDomainRequest;
+	}
 	
 	var READYSTATE_UNSENT = 0;
 	var READYSTATE_OPENED = 1;
