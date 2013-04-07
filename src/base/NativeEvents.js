@@ -24,8 +24,7 @@
 					context = this;
 				}
 				
-				boundCallback = lowland.events.BindManager.bind(callback, context);
-				lowland.bom.Events.listen(element, event, boundCallback, capture);
+				lowland.bom.Events.listen(element, event, core.Function.bind(callback, context), capture);
 			},
 			
 			/**
@@ -47,8 +46,7 @@
 					context = this;
 				}
 				
-				var boundCallback = lowland.events.BindManager.unbind(callback, context);
-				lowland.bom.Events.unlisten(element, event, boundCallback, capture);
+				lowland.bom.Events.unlisten(element, event, core.Function.bind(callback, context), capture);
 			},
 	
 			destruct : function() {
