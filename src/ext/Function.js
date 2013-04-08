@@ -5,10 +5,6 @@
 ==================================================================================================
 */
 
-/**
- * #require(ext.sugar.Object)
- */
-
 (function(window) {
 	var hasPostMessage = !!window.postMessage;
 	var slice = Array.prototype.slice;

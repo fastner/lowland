@@ -5,9 +5,6 @@
 ==================================================================================================
 */
 
-/**
- * #require(ext.sugar.Object)
- */
 (function(global) {
 	/**
 	 * General base object supporting events, userdefined data, debug output and a hash system.

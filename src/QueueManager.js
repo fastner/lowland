@@ -5,11 +5,6 @@
 ==================================================================================================
 */
 
-/**
- * #require(ext.sugar.Object)
- * #require(ext.sugar.Array)
- */
-
 (function(window) {
 	var timer = null;
 	var registration = [];
@@ -85,11 +80,11 @@
 				} else {
 					var pos = 0;
 					for (var j=0,jj=dependent.length; j<jj; j++) {
-						if (depends.contains(dependent[j])) {
+						if (core.Array.contains(depends, dependent[j])) {
 							pos = j+1;
 						}
 					}
-					dependent.insertAt(item.name, pos);
+					core.Array.insertAt(dependent, item.name, pos);
 				}
 			}
 			callstack = independent.concat(dependent);
