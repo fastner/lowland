@@ -22,7 +22,7 @@
 		 * in @context {var}.
 		 */
 		delay : function(time, context, func) {
-			var args = [func, context, time, slice.call(arguments, 3));
+			var args = [func, context, time, slice.call(arguments, 3)];
 			return core.Function.timeout.apply(this, args);
 		},
 		
@@ -64,7 +64,7 @@
 			);
 		} : function(func, context) {
 			return core.Function.bind(core.Function.curry.apply(this, [func].concat(slice.call(arguments, 2))), context);
-		};
+		}
 	});
 	
 })(window);
