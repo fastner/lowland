@@ -8,14 +8,6 @@
 (function(window) {
 	var slice = Array.prototype.slice;
 	
-	var nativeCurryBind = (function() {
-		var p1 = 42;
-		var f = function(a1) {
-			return a1 === p1;
-		}.bind(this, p1);
-		return f();
-	})();
-	
 	core.Module("lowland.Function", {
 		/**
 		 * Delays function for @time {Integer} milliseconds and after that time executes function
@@ -51,19 +43,8 @@
 			return false;*/
 		},
 
-		curryBind : nativeCurryBind ? function(func, context) {
-			if (jasy.Env.isSet("debug")) {
-				core.Assert.isType(func, "Function");
-				core.Assert.isType(context, "Object");
-			}
-
-    			var boundName = "bound:curry:" + core.util.Id.get(func);
-
-			return context[boundName] || (
-				context[boundName] = func.bind.apply(func, [context].concat(slice.call(arguments, 2)))
-			);
-		} : function(func, context) {
-			return core.Function.bind(core.Function.curry.apply(this, [func].concat(slice.call(arguments, 2))), context);
+		curryBind : function(func, context) {
+			return core.Function.curry.apply(this, [core.Function.bind(func, context)].concat(slice.call(arguments, 2)));
 		}
 	});
 	
