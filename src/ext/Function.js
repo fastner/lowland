@@ -7,6 +7,8 @@
 
 (function(window) {
 
+	var slice = Array.prototype.slice;
+
 	core.Module("lowland.ext.Function", {
 		/**
 		 * Delays function for @time {Integer} milliseconds and after that time executes function
