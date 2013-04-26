@@ -6,24 +6,8 @@
 */
 
 (function(window) {
-	var hasPostMessage = !!window.postMessage;
 	var slice = Array.prototype.slice;
-	var timeouts = [];
-	var messageName = "$$lowland-zero-timeout-message";
-	var id = 0;
 	
-	var handleMessage = function(event) {
-		if (event.source == window && event.data == messageName) {
-			lowland.bom.Events.stopPropagation(event);
-			if (timeouts.length > 0) {
-				var timeout = timeouts.shift();
-
-				timeout[0].apply(timeout[1], timeout[2]);
-			}
-		}
-	};
-	lowland.bom.Events.set(window, "message", handleMessage, true);
-
 	var nativeCurryBind = (function() {
 		var p1 = 42;
 		var f = function(a1) {
@@ -83,15 +67,4 @@
 		};
 	});
 	
-	core.Main.addMembers("Function", {
-		lowDelay : function(time, context) {
-			var args = [this, context, time].concat(slice.call(arguments, 2));
-			return core.Function.timeout.apply(this, args);
-		},
-		lazy : function(context) {
-			var args = [context, this].concat(slice.call(arguments,1));
-			return lowland.Function.lazy.apply(this, args);
-		}
-	});
-
 })(window);
