@@ -33,6 +33,8 @@
 				st.appendChild(rule);
 			}
 			document.head.appendChild(st);
+
+			return st;
 		},
 		
 		set : setStyle,
