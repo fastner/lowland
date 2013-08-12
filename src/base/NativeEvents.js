@@ -48,13 +48,17 @@
 				
 				lowland.bom.Events.unlisten(element, event, core.Function.bind(callback, context), capture);
 			},
-	
-			destruct : function() {
+
+			removeAllNativeListeners : function() {
 				var destructableEventsList = this.__destructableEventsList;
 				while (destructableEventsList && destructableEventsList.length > 0) {
 					var evt = destructableEventsList[0];
 					this.removeNativeListener.apply(this, evt);
 				}
+			},
+	
+			destruct : function() {
+				this.removeAllNativeListeners();
 			},
 	
 			debugNativeListener : jasy.Env.isSet("debug") ? lowland.bom.Events.debugEvents : undefined
