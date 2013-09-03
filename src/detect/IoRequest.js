@@ -5,31 +5,36 @@
 ==================================================================================================
 */
 
-core.Module("lowland.detect.IoRequest", {
-	VALUE : (function(global) {
-	
-		if (!global.ActiveXObject) {
-			try {
-				new global.XMLHttpRequest();
-				return "XHR";
-			} catch (e) {
-			}
-		} else {
-			if (window.location.protocol !== "file:") {
+(function() {
+	"use strict";
+
+	/* globals core */
+	core.Module("lowland.detect.IoRequest", {
+		VALUE : (function(global) {
+		
+			if (!global.ActiveXObject) {
 				try {
 					new global.XMLHttpRequest();
 					return "XHR";
 				} catch (e) {
 				}
+			} else {
+				if (global.location.protocol !== "file:") {
+					try {
+						new global.XMLHttpRequest();
+						return "XHR";
+					} catch (e) {
+					}
+				}
+				
+				try {
+					new global.ActiveXObject("Microsoft.XMLHTTP");
+								return "ACTIVEX";
+				} catch(e) {
+				}
 			}
 			
-			try {
-				new window.ActiveXObject("Microsoft.XMLHTTP");
-							return "ACTIVEX";
-			} catch(e) {
-			}
-		}
-		
-		return "NONE";
-	})(this)
-});
+			return "NONE";
+		})(core.Main.getGlobal())
+	});
+})();
